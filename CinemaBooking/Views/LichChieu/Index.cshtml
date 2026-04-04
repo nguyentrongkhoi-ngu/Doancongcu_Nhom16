@@ -1,0 +1,838 @@
+@model CinemaBooking.Models.ViewModels.LichChieuListViewModel
+
+@{
+    ViewData["Title"] = "Quản lý lịch chiếu";
+}
+
+@section Styles {
+    <style>
+        .schedule-hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 60px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="schedule-pattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23schedule-pattern)"/></svg>');
+        }
+
+        .schedule-hero h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-hero p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            margin-bottom: 30px;
+        }
+
+        .btn-add-schedule {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-schedule:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(231, 76, 60, 0.4);
+            background: linear-gradient(135deg, #e55347, #c44133);
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: none;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .filter-card .card-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            font-weight: 600;
+        }
+
+        .filter-card .card-body {
+            padding: 30px;
+        }
+
+        .filter-input-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-input-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .filter-input-group .form-control,
+        .filter-input-group .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-input-group .form-control:focus,
+        .filter-input-group .form-select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-filter {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .schedule-table-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: none;
+            overflow: hidden;
+        }
+
+        .schedule-table-card .card-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            font-weight: 600;
+        }
+
+        .schedule-table-card .card-body {
+            padding: 0;
+        }
+
+        .enhanced-table {
+            margin: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            background: white;
+            border-radius: 0 0 20px 20px;
+            overflow: hidden;
+        }
+
+        .enhanced-table thead th {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            font-weight: 600;
+            padding: 18px 12px;
+            border: none;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .enhanced-table thead th:first-child {
+            border-radius: 0;
+        }
+
+        .enhanced-table thead th:last-child {
+            border-radius: 0;
+        }
+
+        .enhanced-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f1f3f4;
+            background: white;
+        }
+
+        .enhanced-table tbody tr:nth-child(even) {
+            background: #fafbfc;
+        }
+
+        .enhanced-table tbody tr:hover {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+
+        .enhanced-table tbody td {
+            padding: 16px 12px;
+            border: none;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .movie-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .cinema-name {
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        .room-number {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .schedule-date {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        .schedule-time {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            min-width: 80px;
+            display: inline-block;
+        }
+
+        .duration-badge {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .price-tag {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-align: center;
+            display: inline-block;
+            min-width: 80px;
+        }
+
+        .language-badge {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .action-buttons-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-buttons-group .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .table-container {
+            max-height: 70vh;
+            overflow-y: auto;
+            border-radius: 0 0 20px 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Enhanced badge hover effects */
+        .schedule-date:hover,
+        .schedule-time:hover,
+        .duration-badge:hover,
+        .price-tag:hover,
+        .language-badge:hover,
+        .room-number:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ID styling */
+        .id-badge {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+
+        /* Movie title styling */
+        .movie-info {
+            text-align: left;
+        }
+
+        .movie-title {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        /* Cinema info styling */
+        .cinema-info {
+            text-align: left;
+        }
+
+        .cinema-name {
+            color: #3498db;
+            font-weight: 600;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+
+        /* Enhanced table animations */
+        .enhanced-table tbody tr {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 1200px) {
+            .enhanced-table {
+                font-size: 0.8rem;
+            }
+
+            .enhanced-table thead th,
+            .enhanced-table tbody td {
+                padding: 12px 8px;
+            }
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .no-data i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .alert-enhanced {
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .alert-success-enhanced {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .alert-danger-enhanced {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+
+        @@media (max-width: 768px) {
+            .schedule-hero h1 {
+                font-size: 2rem;
+            }
+
+            .filter-card .card-body {
+                padding: 20px;
+            }
+
+            .enhanced-table {
+                font-size: 0.9rem;
+            }
+
+            .enhanced-table thead th,
+            .enhanced-table tbody td {
+                padding: 15px 10px;
+            }
+        }
+    </style>
+}
+
+<!-- Hero Section -->
+<div class="schedule-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>Quản lý lịch chiếu</h1>
+                <p>Quản lý và theo dõi tất cả lịch chiếu phim trong hệ thống</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a asp-action="Create" class="btn btn-add-schedule">
+            <i class="fas fa-plus me-2"></i>Thêm lịch chiếu mới
+        </a>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success-enhanced alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger-enhanced alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Filter Card -->
+    <div class="filter-card">
+        <div class="card-header">
+            <i class="fas fa-filter me-2"></i>Bộ lọc tìm kiếm
+        </div>
+        <div class="card-body">
+            <form asp-action="Index" method="get">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="filter-input-group">
+                            <label>Tìm kiếm</label>
+                            <input type="text" asp-for="SearchTerm" class="form-control"
+                                   placeholder="Tên phim, tên rạp...">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="filter-input-group">
+                            <label>Phim</label>
+                            <select asp-for="MaPhim" asp-items="Model.PhimList" class="form-select">
+                                <option value="">-- Tất cả phim --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="filter-input-group">
+                            <label>Rạp chiếu</label>
+                            <select asp-for="MaRap" asp-items="Model.RapList" class="form-select">
+                                <option value="">-- Tất cả rạp --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="filter-input-group">
+                            <label>Ngày bắt đầu</label>
+                            <input type="date" asp-for="NgayBatDau" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="filter-input-group">
+                            <label>Ngày kết thúc</label>
+                            <input type="date" asp-for="NgayKetThuc" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-6 d-flex align-items-end">
+                        <div class="filter-input-group w-100">
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-filter">
+                                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                                </button>
+                                <a asp-action="Index" class="btn btn-reset">
+                                    <i class="fas fa-redo me-2"></i>Đặt lại
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Table -->
+    <div class="schedule-table-card">
+        <div class="card-header">
+            <i class="fas fa-calendar-alt me-2"></i>Danh sách lịch chiếu
+        </div>
+        <div class="card-body">
+            <div class="table-container">
+                <table class="enhanced-table table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Phim</th>
+                            <th>Rạp</th>
+                            <th>Phòng</th>
+                            <th>Ngày chiếu</th>
+                            <th>Giờ chiếu</th>
+                            <th>Thời lượng</th>
+                            <th>Giá vé</th>
+                            <th>Ngôn ngữ</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.LichChieus == null || !Model.LichChieus.Any())
+                        {
+                            <tr>
+                                <td colspan="10">
+                                    <div class="no-data">
+                                        <i class="fas fa-calendar-times"></i>
+                                        <h4>Không có lịch chiếu nào</h4>
+                                        <p>Chưa có lịch chiếu nào được tạo hoặc không có kết quả phù hợp với bộ lọc.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.LichChieus)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="id-badge">#@item.MaLichChieu</span>
+                                    </td>
+                                    <td>
+                                        <div class="movie-info">
+                                            <div class="movie-title">@item.Phim?.TenPhim</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cinema-info">
+                                            <div class="cinema-name">@item.PhongChieu?.RapPhim?.TenRap</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="room-number">Phòng @item.PhongChieu?.SoPhong</span>
+                                    </td>
+                                    <td>
+                                        <span class="schedule-date">
+                                            @item.NgayChieu.ToString("dd/MM")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="schedule-time">
+                                            @item.GioChieu.ToString(@"hh\:mm")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="duration-badge">
+                                            @item.Phim?.ThoiLuong phút
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="price-tag">
+                                            @item.GiaVe.ToString("N0") VNĐ
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="language-badge">
+                                            @(item.NgonNguPhim?.NgonNgu ?? "N/A")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons-group">
+                                            <a asp-action="Edit" asp-route-id="@item.MaLichChieu"
+                                               class="btn btn-edit" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.MaLichChieu"
+                                               class="btn btn-info" title="Chi tiết">
+                                                <i class="fas fa-info-circle"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.MaLichChieu"
+                                               class="btn btn-delete" title="Xóa"
+                                               onclick="return confirm('Bạn có chắc chắn muốn xóa lịch chiếu này?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Enhanced DataTable with modern styling
+            if ($(".enhanced-table").length > 0) {
+                $(".enhanced-table").DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Vietnamese.json'
+                    },
+                    "paging": true,
+                    "pageLength": 15,
+                    "order": [[4, 'asc'], [5, 'asc']], // Sắp xếp theo ngày và giờ chiếu
+                    "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip',
+                    "responsive": true,
+                    "autoWidth": false,
+                    "columnDefs": [
+                        { "orderable": false, "targets": [9] }, // Disable sorting for action column
+                        { "className": "text-center", "targets": [0, 3, 4, 5, 6, 7, 8, 9] }
+                    ],
+                    "drawCallback": function() {
+                        // Re-apply hover effects after table redraw
+                        $('.enhanced-table tbody tr').hover(
+                            function() {
+                                $(this).addClass('table-hover-effect');
+                            },
+                            function() {
+                                $(this).removeClass('table-hover-effect');
+                            }
+                        );
+                    }
+                });
+            }
+
+            // Enhanced filter functionality
+            const filterForm = $('form');
+            const filterInputs = filterForm.find('input, select');
+
+            // Auto-submit on filter change (with debounce)
+            let filterTimeout;
+            filterInputs.on('input change', function() {
+                clearTimeout(filterTimeout);
+                filterTimeout = setTimeout(function() {
+                    // Optional: Auto-submit after user stops typing
+                    // filterForm.submit();
+                }, 1000);
+            });
+
+            // Set minimum date for date inputs
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').attr('min', today);
+
+            // Enhanced button interactions
+            $('.btn-filter').on('click', function() {
+                const btn = $(this);
+                const originalText = btn.html();
+                btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Đang tìm kiếm...');
+                btn.prop('disabled', true);
+
+                // Re-enable after form submission
+                setTimeout(function() {
+                    btn.html(originalText);
+                    btn.prop('disabled', false);
+                }, 2000);
+            });
+
+            // Smooth scroll to table after filter
+            if (window.location.search) {
+                $('html, body').animate({
+                    scrollTop: $('.schedule-table-card').offset().top - 100
+                }, 800);
+            }
+
+            // Enhanced tooltips for action buttons
+            $('[title]').tooltip({
+                placement: 'top',
+                trigger: 'hover'
+            });
+
+            // Confirmation dialogs with enhanced styling
+            $('.btn-delete').on('click', function(e) {
+                e.preventDefault();
+                const url = $(this).attr('href');
+
+                if (confirm('⚠️ Bạn có chắc chắn muốn xóa lịch chiếu này?\n\nHành động này không thể hoàn tác!')) {
+                    window.location.href = url;
+                }
+            });
+
+            // Auto-hide alerts after 5 seconds
+            $('.alert').delay(5000).fadeOut('slow');
+
+            // Load FontAwesome if not already loaded
+            if (!$('link[href*="fontawesome"]').length) {
+                $('head').append('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">');
+            }
+
+            // Add loading animation to page
+            $(window).on('beforeunload', function() {
+                $('body').append('<div class="loading-overlay"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            });
+        });
+    </script>
+
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .table-hover-effect {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 20px;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+    </style>
+}

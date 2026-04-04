@@ -1,0 +1,716 @@
+@model CinemaBooking.Models.ViewModels.PhimDanhGiaViewModel
+
+@{
+    ViewData["Title"] = Model.Phim.TenPhim + " | CineZore";
+    var posterUrl = string.IsNullOrEmpty(Model.Phim.UrlPoster) ? "/images/no-image.jpg" : Model.Phim.UrlPoster;
+    var hasScreenings = ViewBag.HasFutureScreenings == true;
+    var releaseDate = Model.Phim.NgayPhatHanh?.ToString("dd/MM/yyyy") ?? "Chưa xác định";
+    var releaseYear = Model.Phim.NgayPhatHanh?.Year.ToString() ?? DateTime.Now.Year.ToString();
+    var totalMin = Model.Phim.ThoiLuong;
+    var duration = totalMin > 0 ? $"{totalMin / 60}h {totalMin % 60}m" : "N/A";
+    var genres = string.IsNullOrEmpty(Model.Phim.TheLoai)
+        ? new string[0]
+        : Model.Phim.TheLoai.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+    // Detect trailer type: YouTube vs local file
+    var trailerUrl = Model.Phim.Trailer ?? "";
+    var isYouTube = trailerUrl.Contains("youtube.com") || trailerUrl.Contains("youtu.be");
+    var isLocalVideo = !string.IsNullOrEmpty(trailerUrl) && !isYouTube;
+    string? youtubeEmbedUrl = null;
+    if (isYouTube)
+    {
+        if (trailerUrl.Contains("watch?v="))
+            youtubeEmbedUrl = trailerUrl.Replace("watch?v=", "embed/");
+        else if (trailerUrl.Contains("youtu.be/"))
+            youtubeEmbedUrl = "https://www.youtube.com/embed/" + trailerUrl.Split('/').Last();
+        else
+            youtubeEmbedUrl = trailerUrl; // already embed URL
+    }
+}
+
+<div class="mvd-root">
+
+    <!-- ─── TOP BANNER ─── -->
+    <div class="mvd-banner" style="background-image:url('@posterUrl');">
+        <div class="mvd-banner-overlay"></div>
+        <div class="mvd-banner-nav">
+            <nav class="mvd-bread" aria-label="breadcrumb">
+                <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                <span class="mvd-sep">/</span>
+                <a asp-controller="Home" asp-action="Index" asp-fragment="movies">Phim</a>
+                <span class="mvd-sep">/</span>
+                <span class="mvd-cur">@Model.Phim.TenPhim</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ─── MAIN CONTENT ─── -->
+    <div class="mvd-page">
+        <div class="mvd-container">
+
+            <!-- ─── HERO ROW ─── -->
+            <div class="mvd-hero">
+                <!-- Poster -->
+                <div class="mvd-poster-col">
+                    <img src="@posterUrl" alt="@Model.Phim.TenPhim" class="mvd-poster">
+                    <div class="mvd-actions">
+                        @if (hasScreenings)
+                        {
+                            <a asp-controller="DatVe" asp-action="Index" asp-route-maPhim="@Model.Phim.MaPhim" class="mvd-btn mvd-btn-red">
+                                <i class="fas fa-ticket-alt"></i> Đặt vé ngay
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="mvd-btn mvd-btn-red mvd-btn-disabled" disabled>
+                                <i class="fas fa-clock"></i> Chưa mở bán
+                            </button>
+                        }
+                        <a asp-controller="DanhGia" asp-action="CreateDanhGia" asp-route-id="@Model.Phim.MaPhim" class="mvd-btn mvd-btn-ghost">
+                            <i class="far fa-star"></i> Viết đánh giá
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="mvd-info">
+                    <span class="mvd-status @(hasScreenings ? "mvd-status-green" : "mvd-status-amber")">
+                        @(hasScreenings ? "● Đang chiếu" : "◌ Sắp chiếu")
+                    </span>
+
+                    <h1 class="mvd-title" style="color: #ffffff !important; text-shadow: 2px 2px 10px rgba(0,0,0,0.9) !important;">@Model.Phim.TenPhim</h1>
+
+                    <div class="mvd-meta">
+                        <span><i class="far fa-calendar-alt"></i> @releaseYear</span>
+                        <span class="mvd-dot">·</span>
+                        <span><i class="far fa-clock"></i> @duration</span>
+                        @if (!string.IsNullOrEmpty(Model.Phim.DinhDang))
+                        {
+                            <span class="mvd-dot">·</span>
+                            <span class="mvd-fmt-badge">@Model.Phim.DinhDang</span>
+                        }
+                    </div>
+
+                    <div class="mvd-genres">
+                        @foreach (var g in genres)
+                        {
+                            <span class="mvd-genre-tag">@g.Trim()</span>
+                        }
+                    </div>
+
+                    <div class="mvd-rating">
+                        <div class="mvd-score-box">
+                            <span class="mvd-score-num">@Model.DiemTrungBinh.ToString("0.0")</span>
+                            <span class="mvd-score-denom">/5</span>
+                        </div>
+                        <div class="mvd-stars-wrap">
+                            <div class="mvd-stars">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="@(i <= Math.Round(Model.DiemTrungBinh) ? "fas" : "far") fa-star"></i>
+                                }
+                            </div>
+                            <span class="mvd-votes">@Model.TongSoDanhGia lượt đánh giá</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── BODY GRID ─── -->
+            <div class="mvd-body">
+
+                <!-- Sidebar -->
+                <aside class="mvd-sidebar">
+                    <div class="mvd-card">
+                        <div class="mvd-card-head">Thông tin phim</div>
+                        <table class="mvd-table">
+                            <tr>
+                                <th>Ngày chiếu</th>
+                                <td>@releaseDate</td>
+                            </tr>
+                            <tr>
+                                <th>Thời lượng</th>
+                                <td>@duration</td>
+                            </tr>
+                            <tr>
+                                <th>Định dạng</th>
+                                <td>@(!string.IsNullOrEmpty(Model.Phim.DinhDang) ? Model.Phim.DinhDang : "2D")</td>
+                            </tr>
+                            <tr>
+                                <th>Thể loại</th>
+                                <td>@(genres.Length > 0 ? string.Join(", ", genres.Select(x => x.Trim())) : "—")</td>
+                            </tr>
+                            <tr>
+                                <th>Điểm TB</th>
+                                <td class="mvd-td-gold">★ @Model.DiemTrungBinh.ToString("0.0") / 5</td>
+                            </tr>
+                        </table>
+                    </div>
+                </aside>
+
+                <!-- Main content -->
+                <div class="mvd-main">
+
+                    <!-- Synopsis -->
+                    <section class="mvd-section">
+                        <h2 class="mvd-section-title" style="color: #ffffff !important; text-shadow: 1px 1px 5px rgba(0,0,0,0.8) !important;">Nội dung phim</h2>
+                        <p class="mvd-synopsis">
+                            @(string.IsNullOrEmpty(Model.Phim.MoTa)
+                                ? "Đang cập nhật nội dung phim. Vui lòng quay lại sau."
+                                : Model.Phim.MoTa)
+                        </p>
+                    </section>
+
+                    <!-- Trailer -->
+                    @if (!string.IsNullOrEmpty(trailerUrl))
+                    {
+                        <section class="mvd-section">
+                            <h2 class="mvd-section-title" style="color: #ffffff !important; text-shadow: 1px 1px 5px rgba(0,0,0,0.8) !important;">Trailer chính thức</h2>
+                            <div class="mvd-trailer-wrap">
+                                @if (isYouTube && youtubeEmbedUrl != null)
+                                {
+                                    <iframe src="@youtubeEmbedUrl"
+                                            frameborder="0"
+                                            allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+                                            allowfullscreen
+                                            class="mvd-trailer-frame"></iframe>
+                                }
+                                else if (isLocalVideo)
+                                {
+                                    <video controls class="mvd-trailer-video" preload="metadata">
+                                        <source src="@trailerUrl" type="video/mp4">
+                                        Trình duyệt của bạn không hỗ trợ video.
+                                    </video>
+                                }
+                            </div>
+                        </section>
+                    }
+
+                    <!-- Reviews -->
+                    <section class="mvd-section">
+                        <div class="mvd-section-header">
+                            <h2 class="mvd-section-title mb-0" style="color: #ffffff !important; text-shadow: 1px 1px 5px rgba(0,0,0,0.8) !important;">Đánh giá từ khán giả</h2>
+                            <a asp-controller="DanhGia" asp-action="DanhSachDanhGia" asp-route-id="@Model.Phim.MaPhim" class="mvd-view-all">
+                                Xem tất cả <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        @if (Model.DanhSachDanhGia != null && Model.DanhSachDanhGia.Any())
+                        {
+                            <div class="mvd-reviews">
+                                @foreach (var r in Model.DanhSachDanhGia.Take(3))
+                                {
+                                    <div class="mvd-review">
+                                        <div class="mvd-rev-top">
+                                            <div class="mvd-avatar">@(r.NguoiDung?.HoTen?.Length > 0 ? r.NguoiDung.HoTen[0].ToString().ToUpper() : "?")</div>
+                                            <div class="mvd-rev-meta">
+                                                <div class="mvd-rev-name">@(r.NguoiDung?.HoTen ?? "Người dùng ẩn danh")</div>
+                                                <div class="mvd-rev-stars">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+                                                        <i class="@(i <= (r.DiemSo ?? 0) ? "fas" : "far") fa-star"></i>
+                                                    }
+                                                    <span class="mvd-rev-score">@r.DiemSo/5</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="mvd-rev-text">@r.BinhLuan</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mvd-empty">
+                                <i class="far fa-comment-alt"></i>
+                                <p>Chưa có đánh giá nào. Hãy là người đầu tiên!</p>
+                            </div>
+                        }
+                    </section>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   MOVIE DETAIL — Scoped styles (high specificity override)
+   All within .mvd-root to beat home-cinezore.css globals
+   ═══════════════════════════════════════════════════════ */
+
+/* Root reset — force color on entire subtree */
+.mvd-root {
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif !important;
+    color: #e8e8e8 !important;
+}
+
+/* Kill site.css "body:not(.home-page) main .container { color:#212529 }" by
+   overriding on all descendants (must beat specificity 0,1,3 of that rule) */
+.mvd-root * { color: inherit; }
+
+/* Override home-cinezore.css "a:not(.btn) { color:inherit !important }" —
+   we need specificity > 0,1,1, so prefix with .mvd-root */
+.mvd-root a:not(.btn) { color: inherit !important; text-decoration: none !important; }
+
+/* ── Override home-cinezore.css container reset ── */
+.mvd-root .mvd-container,
+.mvd-root .mvd-sidebar,
+.mvd-root .mvd-main,
+.mvd-root .mvd-body {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    max-width: none !important;
+}
+
+/* ── Banner ── */
+.mvd-banner {
+    height: 230px;
+    background-size: cover;
+    background-position: center 25%;
+    position: relative;
+    overflow: hidden;
+}
+.mvd-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(13,13,13,1) 100%);
+}
+.mvd-banner-nav {
+    position: relative;
+    z-index: 2;
+    padding: 80px 32px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.mvd-bread {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+/* ── Global White Text Override (Ultimate Specificity) ── */
+body:not(.home-page) .mvd-root,
+body:not(.home-page) .mvd-root *,
+.mvd-root,
+.mvd-root div,
+.mvd-root p,
+.mvd-root span,
+.mvd-root a,
+.mvd-root li,
+.mvd-root h1,
+.mvd-root h2,
+.mvd-root h3,
+.mvd-root h4,
+.mvd-root h5,
+.mvd-root h6,
+.mvd-root th,
+.mvd-root td {
+    color: #ffffff !important;
+}
+
+/* ── Restore Specific UI Colors (Re-affirming after wildcard) ── */
+.mvd-root .mvd-sep { color: #666666 !important; }
+.mvd-root .mvd-bread a { color: #aaaaaa !important; }
+.mvd-root .mvd-bread a:hover { color: #ffffff !important; }
+.mvd-root .mvd-cur { color: #ffffff !important; font-weight: 600 !important; }
+
+/* ── Page wrapper ── */
+.mvd-page {
+    background: #141414;
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+.mvd-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+/* ── Hero row ── */
+.mvd-hero {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-top: -80px;
+    position: relative;
+    z-index: 10;
+    padding-bottom: 44px;
+    border-bottom: 1px solid #2a2a2a;
+    margin-bottom: 44px;
+}
+
+/* Poster */
+.mvd-poster-col { flex: 0 0 210px; }
+.mvd-poster {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08);
+    display: block;
+    transition: transform 0.3s;
+}
+.mvd-poster:hover { transform: scale(1.02); }
+.mvd-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+
+/* Buttons */
+.mvd-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 13px 16px !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
+    letter-spacing: 0.4px !important;
+    text-decoration: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.25s !important;
+    font-family: 'Outfit', system-ui, sans-serif !important;
+}
+.mvd-btn-red {
+    background: #E50914 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(229,9,20,0.45) !important;
+}
+.mvd-btn-red:hover {
+    background: #c50812 !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 26px rgba(229,9,20,0.55) !important;
+}
+.mvd-btn-disabled {
+    background: #333 !important;
+    color: #666 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+.mvd-btn-ghost,
+.mvd-root a.mvd-btn-ghost {
+    background: #1e1e1e !important;
+    border: 2px solid #3a3a3a !important;
+    color: #e0e0e0 !important;
+}
+.mvd-btn-ghost:hover,
+.mvd-root a.mvd-btn-ghost:hover {
+    border-color: #aaa !important;
+    color: #fff !important;
+    background: #272727 !important;
+}
+
+/* Info column */
+.mvd-info { flex: 1; padding-top: 50px; min-width: 0; }
+
+.mvd-status {
+    display: inline-flex !important;
+    align-items: center !important;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+    padding: 5px 14px !important;
+    border-radius: 20px !important;
+    margin-bottom: 16px !important;
+}
+.mvd-status-green, .mvd-root .mvd-status-green {
+    background: rgba(34,197,94,0.2) !important;
+    color: #4ade80 !important;
+    border: 1px solid rgba(34,197,94,0.5) !important;
+}
+.mvd-status-amber, .mvd-root .mvd-status-amber {
+    background: rgba(251,191,36,0.18) !important;
+    color: #fbbf24 !important;
+    border: 1px solid rgba(251,191,36,0.5) !important;
+}
+
+/* Force Title Visibility (Ultimate Specificity) */
+body:not(.home-page) main .mvd-root h1.mvd-title,
+body:not(.home-page) .mvd-root .mvd-title,
+.mvd-root .mvd-title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem) !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    margin: 0 0 20px !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.01em !important;
+    font-family: 'Outfit', system-ui, sans-serif !important;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(229, 9, 20, 0.4) !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Breadcrumbs Color Fix */
+.mvd-root .mvd-bread a,
+.mvd-root .mvd-bread span,
+.mvd-root .mvd-cur {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+.mvd-root .mvd-bread a:hover {
+    color: #E50914 !important;
+}
+
+.mvd-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    color: #ffffff !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 16px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+.mvd-meta i { color: #888; margin-right: 4px; }
+.mvd-dot { color: #555; }
+.mvd-fmt-badge, .mvd-root .mvd-fmt-badge {
+    background: rgba(229,9,20,0.22) !important;
+    border: 1px solid rgba(229,9,20,0.5) !important;
+    color: #ff8080 !important;
+    border-radius: 5px !important;
+    padding: 2px 10px !important;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+}
+
+.mvd-genres { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.mvd-genre-tag {
+    padding: 6px 16px !important;
+    border-radius: 20px !important;
+    background: #242424 !important;
+    border: 1px solid #3c3c3c !important;
+    color: #dddddd !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+}
+.mvd-genre-tag:hover { background: #2e2e2e !important; border-color: #666 !important; color: #fff !important; }
+
+.mvd-rating { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.mvd-score-box {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    background: #1e1c0a;
+    border: 1px solid rgba(245,197,24,0.45);
+    border-radius: 10px;
+    padding: 10px 18px;
+}
+.mvd-score-num, .mvd-root .mvd-score-num { font-size: 2.1rem !important; font-weight: 800 !important; color: #f5c518 !important; line-height: 1 !important; }
+.mvd-score-denom, .mvd-root .mvd-score-denom { font-size: 1rem !important; color: #888888 !important; }
+.mvd-stars-wrap, .mvd-root .mvd-stars-wrap { display: flex !important; flex-direction: column !important; gap: 6px !important; }
+.mvd-stars, .mvd-root .mvd-stars, .mvd-root .mvd-stars i { display: flex !important; gap: 4px !important; color: #f5c518 !important; font-size: 1.05rem !important; }
+.mvd-votes, .mvd-root .mvd-votes { font-size: 0.8rem !important; color: #aaaaaa !important; }
+
+/* ── Body grid ── */
+.mvd-body {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 36px;
+    align-items: start;
+}
+
+/* Sidebar card */
+.mvd-card {
+    background: #1c1c1c !important;
+    border: 1px solid #2e2e2e !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+}
+.mvd-card-head, .mvd-root .mvd-card-head {
+    background: #242424 !important;
+    border-bottom: 1px solid #2e2e2e !important;
+    padding: 13px 20px !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    color: #bbbbbb !important;
+}
+.mvd-table { width: 100%; border-collapse: collapse; }
+.mvd-table tr { border-bottom: 1px solid #272727; }
+.mvd-table tr:last-child { border: none; }
+.mvd-table th, .mvd-table td { padding: 12px 18px; font-size: 0.87rem; text-align: left; }
+.mvd-table th, 
+body:not(.home-page) .mvd-root .mvd-table th { 
+    color: #dddddd !important; 
+    font-weight: 700 !important; 
+    white-space: nowrap !important; 
+    width: 42% !important; 
+    text-transform: uppercase !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 1px !important;
+}
+.mvd-table td, body:not(.home-page) .mvd-root .mvd-table td { color: #ffffff !important; font-weight: 600 !important; }
+.mvd-td-gold, .mvd-root .mvd-td-gold { color: #f5c518 !important; font-weight: 700 !important; }
+
+/* Sections */
+.mvd-main { min-width: 0; }
+.mvd-section { margin-bottom: 48px; }
+
+/* Force Section Titles (Ultimate Specificity) */
+body:not(.home-page) main .mvd-root h2.mvd-section-title,
+body:not(.home-page) .mvd-root h2.mvd-section-title,
+.mvd-root .mvd-section-title {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 15px !important;
+    border-bottom: 3px solid #E50914 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    font-family: 'Outfit', system-ui, sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.9) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.mvd-section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1em;
+    background: #E50914;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.mvd-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2a2a;
+}
+.mvd-section-header .mvd-section-title {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+.mvd-view-all {
+    font-size: 0.83rem !important;
+    font-weight: 600 !important;
+    color: #E50914 !important;
+    text-decoration: none !important;
+    transition: color 0.2s !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+}
+.mvd-view-all:hover { color: #ff5555 !important; }
+
+/* Synopsis */
+.mvd-synopsis {
+    color: #ffffff !important;
+    font-size: 1.1rem !important;
+    line-height: 1.8 !important;
+    text-align: justify !important;
+    margin: 0 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+/* Trailer */
+.mvd-trailer-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16/9;
+    position: relative;
+}
+.mvd-trailer-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 14px;
+}
+.mvd-trailer-video {
+    width: 100%;
+    height: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: #000;
+    display: block;
+}
+
+/* Reviews */
+.mvd-reviews { display: flex; flex-direction: column; gap: 14px; }
+.mvd-review {
+    background: #1c1c1c !important;
+    border: 1px solid #2e2e2e !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    transition: border-color 0.2s, transform 0.2s !important;
+}
+.mvd-review:hover { border-color: #444 !important; transform: translateX(4px) !important; }
+.mvd-rev-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.mvd-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E50914, #7a0308);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.mvd-rev-meta { flex: 1; min-width: 0; }
+/* Review Names Fix */
+.mvd-root .mvd-rev-name {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.mvd-root .mvd-rev-text {
+    color: #e0e0e0 !important;
+}
+
+/* Empty state */
+.mvd-empty {
+    text-align: center;
+    padding: 48px 20px;
+    background: #1c1c1c;
+    border: 1px dashed #2e2e2e;
+    border-radius: 12px;
+}
+.mvd-empty i { font-size: 2.5rem; display: block; margin-bottom: 14px; color: #444; }
+.mvd-empty p { margin: 0; color: #888 !important; font-size: 0.93rem; }
+
+/* ── Responsive ── */
+@@media (max-width: 900px) {
+    .mvd-body { grid-template-columns: 1fr; }
+    .mvd-hero { flex-direction: column; gap: 0; margin-top: -60px; }
+    .mvd-poster-col { margin: 0 auto 20px; max-width: 190px; }
+    .mvd-info { padding-top: 0; }
+    .mvd-title { font-size: 1.7rem !important; }
+}
+@@media (max-width: 600px) {
+    .mvd-container { padding: 0 16px; }
+    .mvd-banner { height: 160px; }
+    .mvd-banner-nav { padding-top: 72px; padding-left: 16px; }
+    .mvd-hero { margin-top: -50px; }
+    .mvd-title { font-size: 1.4rem !important; }
+    .mvd-meta { font-size: 0.82rem; }
+    .mvd-section-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+</style>

@@ -1,0 +1,162 @@
+@model CinemaBooking.Models.DatVe
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "In vé theo ghế";
+    Layout = "_PrintLayout";
+}
+
+<div class="container mt-4 print-container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="print-actions mb-3 d-print-none">
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="fas fa-print"></i> In tất cả vé
+                </button>
+                <a href="@Url.Action("LichSuDatVe", "Home")" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+
+            <div class="alert alert-info d-print-none">
+                <i class="fas fa-info-circle"></i> Mỗi vé tương ứng với một ghế. Vui lòng in tất cả vé để sử dụng.
+            </div>
+
+            @if (Model.DatVeGhes != null && Model.DatVeGhes.Any())
+            {
+                @foreach (var datVeGhe in Model.DatVeGhes)
+                {
+                    <div class="ticket-container">
+                        <!-- Header -->
+                        <div class="ticket-header">
+                            <h2 class="text-center">VÉ XEM PHIM</h2>
+                            <div class="text-center mb-3">
+                                <p class="mb-0">Mã vé: #@Model.MaDatVe - Ghế @datVeGhe.Ghe.SoGhe</p>
+                            </div>
+                        </div>
+
+                        <!-- Main Ticket Content -->
+                        <div class="ticket-content">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="ticket-section">
+                                        <h3 class="ticket-title">@Model.LichChieu.Phim.TenPhim</h3>
+                                        <div class="ticket-info">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Rạp:</strong> @Model.LichChieu.PhongChieu.RapPhim.TenRap</p>
+                                                    <p><strong>Phòng:</strong> @Model.LichChieu.PhongChieu.SoPhong</p>
+                                                    <p><strong>Ngày chiếu:</strong> @string.Format(CultureInfo.InvariantCulture, "{0:dd/MM/yyyy}", Model.LichChieu.NgayChieu)</p>
+                                                    <p><strong>Giờ chiếu:</strong> @($"{Model.LichChieu.GioChieu.Hours:D2}:{Model.LichChieu.GioChieu.Minutes:D2}")</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Ghế:</strong> <span class="badge bg-primary">@datVeGhe.Ghe.SoGhe</span></p>
+                                                    <p><strong>Loại ghế:</strong> @datVeGhe.Ghe.LoaiGhe</p>
+                                                    <p><strong>Khách hàng:</strong> @Model.NguoiDung.HoTen</p>
+                                                    <p><strong>Ngày đặt:</strong> @string.Format(CultureInfo.InvariantCulture, "{0:dd/MM/yyyy HH:mm}", Model.NgayDat)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="ticket-qr text-center">
+                                        <div class="qrcode" data-ticket-id="@Model.MaDatVe" data-seat="@datVeGhe.Ghe.SoGhe"></div>
+                                        <p class="mt-2">Mã vé: #@Model.MaDatVe</p>
+                                        <p>Ghế: @datVeGhe.Ghe.SoGhe</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="ticket-footer">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="ticket-notes">
+                                        <p class="mb-1"><i class="fas fa-info-circle"></i> Vui lòng đến trước giờ chiếu 15 phút.</p>
+                                        <p class="mb-1"><i class="fas fa-exclamation-circle"></i> Vé không được hoàn trả sau khi thanh toán.</p>
+                                        <p class="mb-0"><i class="fas fa-utensils"></i> Không mang đồ ăn, thức uống từ bên ngoài vào rạp.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cut line -->
+                        <div class="cut-line">
+                            <div class="dotted-line"></div>
+                            <div class="scissors">
+                                <i class="fas fa-cut"></i>
+                            </div>
+                        </div>
+
+                        <!-- Stub -->
+                        <div class="ticket-stub">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5>@Model.LichChieu.Phim.TenPhim</h5>
+                                    <p class="mb-1"><strong>Suất chiếu:</strong> @string.Format(CultureInfo.InvariantCulture, "{0:dd/MM/yyyy}", Model.LichChieu.NgayChieu) @($"{Model.LichChieu.GioChieu.Hours:D2}:{Model.LichChieu.GioChieu.Minutes:D2}")</p>
+                                    <p class="mb-0"><strong>Ghế:</strong> <span class="badge bg-primary">@datVeGhe.Ghe.SoGhe</span></p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <p class="mb-0">Mã vé: #@Model.MaDatVe</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page break except for the last item -->
+                    @if (datVeGhe != Model.DatVeGhes.Last())
+                    {
+                        <div class="page-break d-none d-print-block"></div>
+                    }
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> Không tìm thấy thông tin ghế cho vé này.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        @@media print {
+            .page-break {
+                page-break-after: always;
+                height: 0;
+                display: block;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tạo mã QR cho từng vé
+            var qrElements = document.querySelectorAll('.qrcode');
+            qrElements.forEach(function(element) {
+                var ticketId = element.getAttribute('data-ticket-id');
+                var seat = element.getAttribute('data-seat');
+                
+                var qrData = JSON.stringify({
+                    id: ticketId,
+                    movie: "@Model.LichChieu.Phim.TenPhim",
+                    showtime: "@string.Format(CultureInfo.InvariantCulture, "{0:dd/MM/yyyy}", Model.LichChieu.NgayChieu) @($"{Model.LichChieu.GioChieu.Hours:D2}:{Model.LichChieu.GioChieu.Minutes:D2}")",
+                    seat: seat
+                });
+                
+                new QRCode(element, {
+                    text: qrData,
+                    width: 120,
+                    height: 120,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            });
+        });
+    </script>
+} 

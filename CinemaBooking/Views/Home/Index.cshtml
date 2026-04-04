@@ -1,0 +1,375 @@
+@model IEnumerable<CinemaBooking.Models.Phim>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+    ViewData["MetaDescription"] = "CineZore 2026 – Đặt vé xem phim trực tuyến nhanh chóng. Trải nghiệm rạp chiếu phim đẳng cấp.";
+    var featured = ViewBag.FeaturedMovies as IEnumerable<CinemaBooking.Models.Phim>;
+    var nowShowing = ViewBag.NowShowingMovies as IEnumerable<CinemaBooking.Models.Phim>;
+    var comingSoon = ViewBag.ComingSoonMovies as IEnumerable<CinemaBooking.Models.Phim>;
+    var topRated = ViewBag.TopRatedMovies as IEnumerable<CinemaBooking.Models.Phim>;
+    var firstMovie = featured?.FirstOrDefault() ?? Model.FirstOrDefault();
+}
+
+@section Styles {
+    <style>
+        /* Ensure main has no padding for full-bleed hero */
+        main { padding-top: 0 !important; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 0 4%;
+        }
+        .section-title { margin-bottom: 0 !important; }
+        .view-all-link {
+            color: #E50914;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .view-all-link:hover {
+            color: #fff;
+            transform: translateX(5px);
+        }
+    </style>
+}
+
+<!-- ═══════════════ HERO ═══════════════ -->
+@if (firstMovie != null)
+{
+    <section class="hero-section" id="heroSection"
+             style="background-image: url('@(string.IsNullOrEmpty(firstMovie.UrlPoster) ? "/images/no-image.jpg" : firstMovie.UrlPoster)');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+
+            <!-- Featured badge -->
+            <div class="hero-badge">
+                <i class="fas fa-fire" style="font-size:0.55rem;"></i> Nổi bật
+            </div>
+
+            <!-- Meta info -->
+            <div class="hero-meta-badges">
+                @if (firstMovie.NgayPhatHanh.HasValue)
+                {
+                    <span class="badge">@firstMovie.NgayPhatHanh.Value.Year</span>
+                }
+                @if (!string.IsNullOrEmpty(firstMovie.TheLoai))
+                {
+                    <span class="badge">@firstMovie.TheLoai</span>
+                }
+                <span class="badge" style="color:rgba(100,220,120,0.9) !important; border-color:rgba(100,220,120,0.25) !important;">
+                    <i class="fas fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:4px;"></i>Đang chiếu
+                </span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="display-2 fw-bold text-white">@firstMovie.TenPhim</h1>
+
+            <!-- Description -->
+            @if (!string.IsNullOrEmpty(firstMovie.MoTa))
+            {
+                <p class="lead">
+                    @(firstMovie.MoTa.Length > 160 ? firstMovie.MoTa.Substring(0, 160) + "…" : firstMovie.MoTa)
+                </p>
+            }
+
+            <!-- CTA -->
+            <div class="hero-cta">
+                <a asp-controller="DatVe" asp-action="Index" asp-route-maPhim="@firstMovie.MaPhim" class="btn btn-netflix">
+                    <i class="fas fa-ticket-alt"></i> Đặt vé ngay
+                </a>
+                <a asp-controller="Phim" asp-action="Detail" asp-route-id="@firstMovie.MaPhim" class="btn btn-netflix-gray">
+                    <i class="fas fa-play-circle"></i> Xem chi tiết
+                </a>
+            </div>
+
+        </div>
+    </section>
+}
+
+<!-- ═══════════════ MOVIE ROWS ═══════════════ -->
+<div class="movie-rows-container">
+
+    <!-- PHIM ĐANG CHIẾU -->
+    @if (nowShowing != null && nowShowing.Any())
+    {
+        <div class="row-container">
+            <div class="section-header">
+                <h3 class="section-title">Phim đang chiếu</h3>
+                <a asp-controller="LichChieu" asp-action="Index" class="view-all-link">Xem tất cả <i class="fas fa-chevron-right ms-1"></i></a>
+            </div>
+            <div class="movie-row-wrapper">
+                <button class="nav-btn prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                <div class="movie-row" id="rowNowShowing">
+                    @foreach (var item in nowShowing)
+                    {
+                        <div class="movie-card"
+                             onclick="location.href='@Url.Action("Detail", "Phim", new { id = item.MaPhim })'">
+                            <img src="@(string.IsNullOrEmpty(item.UrlPoster) ? "/images/no-image.jpg" : item.UrlPoster)"
+                                 alt="@item.TenPhim" loading="lazy">
+                            <div class="card-content">
+                                <h6>@item.TenPhim</h6>
+                                <div class="small text-success">
+                                    <i class="fas fa-circle" style="font-size:0.4rem;vertical-align:middle;margin-right:4px;"></i>Đang chiếu
+                                </div>
+                                <a href="@Url.Action("Index", "DatVe", new { maPhim = item.MaPhim })"
+                                   class="movie-card-book-btn"
+                                   onclick="event.stopPropagation()">
+                                    Đặt vé
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="nav-btn next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    }
+
+    <!-- FEATURED MOVIES -->
+    @if (featured != null && featured.Any())
+    {
+        <div class="row-container">
+            <div class="section-header">
+                <h3 class="section-title">Phim nổi bật hôm nay</h3>
+            </div>
+            <div class="movie-row-wrapper">
+                <button class="nav-btn prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                <div class="movie-row" id="rowFeatured">
+                    @foreach (var item in featured)
+                    {
+                        <div class="movie-card"
+                             onclick="location.href='@Url.Action("Detail", "Phim", new { id = item.MaPhim })'">
+                            <img src="@(string.IsNullOrEmpty(item.UrlPoster) ? "/images/no-image.jpg" : item.UrlPoster)"
+                                 alt="@item.TenPhim" loading="lazy">
+                            <div class="card-content">
+                                <h6>@item.TenPhim</h6>
+                                <div class="small" style="color:#ffc107">
+                                    <i class="fas fa-fire" style="font-size:0.6rem;margin-right:3px;"></i>Xu hướng
+                                </div>
+                                <a href="@Url.Action("Index", "DatVe", new { maPhim = item.MaPhim })"
+                                   class="movie-card-book-btn"
+                                   onclick="event.stopPropagation()">
+                                    Đặt vé
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="nav-btn next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    }
+
+    <!-- PHIM SẮP CHIẾU -->
+    @if (comingSoon != null && comingSoon.Any())
+    {
+        <div class="row-container">
+            <div class="section-header">
+                <h3 class="section-title">Phim sắp chiếu</h3>
+            </div>
+            <div class="movie-row-wrapper">
+                <button class="nav-btn prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                <div class="movie-row" id="rowComingSoon">
+                    @foreach (var item in comingSoon)
+                    {
+                        <div class="movie-card"
+                             onclick="location.href='@Url.Action("Detail", "Phim", new { id = item.MaPhim })'">
+                            <img src="@(string.IsNullOrEmpty(item.UrlPoster) ? "/images/no-image.jpg" : item.UrlPoster)"
+                                 alt="@item.TenPhim">
+                            <div class="card-content">
+                                <h6>@item.TenPhim</h6>
+                                <div class="small text-info">
+                                    <i class="fas fa-calendar-alt" style="font-size:0.6rem;margin-right:3px;"></i>@(item.NgayPhatHanh.HasValue ? item.NgayPhatHanh.Value.ToString("dd/MM/yyyy") : "Sắp ra mắt")
+                                </div>
+                                <a href="@Url.Action("Detail", "Phim", new { id = item.MaPhim })"
+                                   class="movie-card-book-btn"
+                                   style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);"
+                                   onclick="event.stopPropagation()">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="nav-btn next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    }
+
+    <!-- TOP RATED -->
+    @if (topRated != null && topRated.Any())
+    {
+        <div class="row-container">
+            <div class="section-header">
+                <h3 class="section-title">Được đánh giá cao nhất</h3>
+            </div>
+            <div class="movie-row-wrapper">
+                <button class="nav-btn prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                <div class="movie-row" id="rowTopRated">
+                    @foreach (var item in topRated)
+                    {
+                        <div class="movie-card"
+                             onclick="location.href='@Url.Action("Detail", "Phim", new { id = item.MaPhim })'">
+                            <img src="@(string.IsNullOrEmpty(item.UrlPoster) ? "/images/no-image.jpg" : item.UrlPoster)"
+                                 alt="@item.TenPhim">
+                            <div class="card-content">
+                                <h6>@item.TenPhim</h6>
+                                <div class="small text-warning">
+                                    <i class="fas fa-star" style="font-size:0.6rem;margin-right:3px;"></i>Top @(topRated.ToList().IndexOf(item) + 1)
+                                </div>
+                                <a href="@Url.Action("Index", "DatVe", new { maPhim = item.MaPhim })"
+                                   class="movie-card-book-btn"
+                                   onclick="event.stopPropagation()">
+                                    Đặt vé
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="nav-btn next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    }
+
+    <!-- PROMO STRIP -->
+    @if (User.Identity?.IsAuthenticated != true)
+    {
+        <div class="promo-strip">
+            <div class="promo-strip-text">
+                <h3><i class="fas fa-crown" style="color:#E50914;margin-right:10px;font-size:0.9rem;"></i>Trở thành thành viên CineZore</h3>
+                <p>Đăng ký miễn phí – Đặt vé nhanh chóng, nhận ưu đãi độc quyền và quản lý lịch xem phim của bạn.</p>
+            </div>
+            <a asp-controller="Account" asp-action="Register" class="btn-cta">
+                Tạo tài khoản miễn phí
+            </a>
+        </div>
+    }
+
+    <!-- ALL MOVIES -->
+    @if (Model.Any())
+    {
+        <div class="row-container">
+            <div class="section-header">
+                <h3 class="section-title">Tất cả phim</h3>
+            </div>
+            <div class="movie-row-wrapper">
+                <button class="nav-btn prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                <div class="movie-row" id="rowAll">
+                    @foreach (var item in Model)
+                    {
+                        <div class="movie-card"
+                             onclick="location.href='@Url.Action("Detail", "Phim", new { id = item.MaPhim })'">
+                            <img src="@(string.IsNullOrEmpty(item.UrlPoster) ? "/images/no-image.jpg" : item.UrlPoster)"
+                                 alt="@item.TenPhim" loading="lazy">
+                            <div class="card-content">
+                                <h6>@item.TenPhim</h6>
+                                <div class="small" style="color:rgba(255,255,255,0.45);">
+                                    @(string.IsNullOrEmpty(item.TheLoai) ? "Phim" : item.TheLoai)
+                                </div>
+                                <a href="@Url.Action("Index", "DatVe", new { maPhim = item.MaPhim })"
+                                   class="movie-card-book-btn"
+                                   onclick="event.stopPropagation()">
+                                    Đặt vé
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="nav-btn next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // === NAVBAR SCROLL EFFECT ===
+        const nav = document.querySelector('.navbar-custom');
+        if (nav) {
+            const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        }
+
+        // === HERO PARALLAX ===
+        const hero = document.getElementById('heroSection');
+        if (hero) {
+            window.addEventListener('scroll', () => {
+                const y = window.scrollY;
+                if (y < window.innerHeight) {
+                    hero.style.backgroundPositionY = `calc(50% + ${y * 0.12}px)`;
+                }
+            }, { passive: true });
+        }
+
+        // === MOVIE ROW NAVIGATION & DRAG ===
+        document.querySelectorAll('.movie-row-wrapper').forEach(function (wrapper) {
+            const row = wrapper.querySelector('.movie-row');
+            const prevBtn = wrapper.querySelector('.nav-btn.prev');
+            const nextBtn = wrapper.querySelector('.nav-btn.next');
+
+            if (!row) return;
+
+            // Update button visibility
+            const updateButtons = () => {
+                if (prevBtn) prevBtn.style.visibility = (row.scrollLeft > 10) ? 'visible' : 'hidden';
+                if (nextBtn) nextBtn.style.visibility = (row.scrollLeft + row.clientWidth < row.scrollWidth - 10) ? 'visible' : 'hidden';
+            };
+
+            // Click scrolling (One container width at a time)
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    row.scrollBy({ left: -row.clientWidth * 0.75, behavior: 'smooth' });
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    row.scrollBy({ left: row.clientWidth * 0.75, behavior: 'smooth' });
+                });
+            }
+
+            row.addEventListener('scroll', updateButtons);
+            window.addEventListener('resize', updateButtons);
+            
+            // Initial check
+            setTimeout(updateButtons, 500);
+
+            // Drag-to-Scroll (Enhanced)
+            let isDown = false, startX, scrollLeft;
+
+            row.addEventListener('mousedown', (e) => {
+                isDown = true;
+                row.classList.add('active');
+                startX = e.pageX - row.offsetLeft;
+                scrollLeft = row.scrollLeft;
+                row.style.cursor = 'grabbing';
+            });
+            
+            const deactivate = () => {
+                isDown = false;
+                row.classList.remove('active');
+                row.style.cursor = 'default';
+            };
+
+            row.addEventListener('mouseleave', deactivate);
+            row.addEventListener('mouseup', deactivate);
+            
+            row.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - row.offsetLeft;
+                const walk = (x - startX) * 2; // Scroll speed
+                row.scrollLeft = scrollLeft - walk;
+            });
+        });
+
+    });
+</script>
+}

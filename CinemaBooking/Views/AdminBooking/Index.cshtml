@@ -1,0 +1,183 @@
+@model IEnumerable<CinemaBooking.Models.DatVe>
+
+@{
+    ViewData["Title"] = "Quản lý đặt vé";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Quản lý đặt vé</h1>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Bộ lọc tìm kiếm</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" action="" id="filter-form">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Rạp phim</label>
+                        <select class="form-select" name="rapId" id="rapId">
+                            <option value="">-- Tất cả rạp --</option>
+                            @foreach (var rap in (List<CinemaBooking.Models.RapPhim>)ViewBag.RapPhims)
+                            {
+                                if (ViewBag.RapId == rap.MaRap)
+                                {
+                                    <option value="@rap.MaRap" selected>@rap.TenRap</option>
+                                }
+                                else
+                                {
+                                    <option value="@rap.MaRap">@rap.TenRap</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phòng chiếu</label>
+                        <select class="form-select" name="phongId" id="phongId">
+                            <option value="">-- Tất cả phòng --</option>
+                            @if (ViewBag.PhongChieus != null)
+                            {
+                                foreach (var phong in (List<CinemaBooking.Models.PhongChieu>)ViewBag.PhongChieus)
+                                {
+                                    if (ViewBag.PhongId == phong.MaPhong)
+                                    {
+                                        <option value="@phong.MaPhong" selected>@phong.TenPhong</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@phong.MaPhong">@phong.TenPhong</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" name="trangThai">
+                            <option value="">-- Tất cả trạng thái --</option>
+                            @foreach (var trangThai in (List<string>)ViewBag.TrangThais)
+                            {
+                                if (ViewBag.TrangThai == trangThai)
+                                {
+                                    <option value="@trangThai" selected>@trangThai</option>
+                                }
+                                else
+                                {
+                                    <option value="@trangThai">@trangThai</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Từ ngày</label>
+                        <input type="date" class="form-control" name="tuNgay" value="@ViewBag.TuNgay" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Đến ngày</label>
+                        <input type="date" class="form-control" name="denNgay" value="@ViewBag.DenNgay" />
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary ms-2">
+                        <i class="fas fa-redo"></i> Đặt lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Danh sách vé đã đặt</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Mã đặt vé</th>
+                            <th>Người đặt</th>
+                            <th>Phim</th>
+                            <th>Rạp/Phòng</th>
+                            <th>Thời gian chiếu</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.MaDatVe</td>
+                                    <td>@item.NguoiDung.HoTen</td>
+                                    <td>@item.LichChieu.Phim.TenPhim</td>
+                                    <td>@item.LichChieu.PhongChieu.RapPhim.TenRap / @item.LichChieu.PhongChieu.TenPhong</td>
+                                    <td>@item.LichChieu.NgayChieu.ToString("dd/MM/yyyy") @item.LichChieu.GioChieu.ToString(@"hh\:mm")</td>
+                                    <td>@(item.NgayDat.HasValue ? item.NgayDat.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")</td>
+                                    <td>@item.TongTien.ToString("N0") VNĐ</td>
+                                    <td>
+                                        <span class="badge rounded-pill 
+                                            @(item.TrangThai == "Đã thanh toán" ? "bg-success" : 
+                                              item.TrangThai == "Đã hủy" ? "bg-danger" :
+                                              item.TrangThai == "Chờ thanh toán" ? "bg-warning" : "bg-info")">
+                                            @item.TrangThai
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Details", new { id = item.MaDatVe })" class="btn btn-sm btn-info">
+                                            <i class="fas fa-info-circle"></i> Chi tiết
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">Không có dữ liệu</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Xử lý khi thay đổi rạp phim
+            $('#rapId').change(function() {
+                var rapId = $(this).val();
+                if (rapId) {
+                    // Gọi API để lấy danh sách phòng theo rạp
+                    $.getJSON('@Url.Action("GetPhongsByRap")', { rapId: rapId }, function(data) {
+                        var phongSelect = $('#phongId');
+                        phongSelect.empty();
+                        phongSelect.append($('<option></option>').val('').text('-- Tất cả phòng --'));
+                        
+                        $.each(data, function(index, item) {
+                            phongSelect.append($('<option></option>').val(item.maPhong).text(item.tenPhong));
+                        });
+                    });
+                } else {
+                    // Nếu không chọn rạp nào, xóa tất cả phòng
+                    $('#phongId').empty().append($('<option></option>').val('').text('-- Tất cả phòng --'));
+                }
+            });
+        });
+    </script>
+} 

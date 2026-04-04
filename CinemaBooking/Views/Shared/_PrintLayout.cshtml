@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cinema Booking</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        @@media print {
+            body {
+                background-color: white;
+                font-size: 14px;
+            }
+            .d-print-none {
+                display: none !important;
+            }
+            a[href]:after {
+                content: none !important;
+            }
+        }
+
+        .print-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .ticket-container {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .ticket-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .ticket-content {
+            padding: 20px;
+        }
+
+        .ticket-section {
+            margin-bottom: 20px;
+        }
+
+        .ticket-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .ticket-info p {
+            margin-bottom: 8px;
+        }
+
+        .ticket-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+            border-left: 1px dashed #ddd;
+        }
+
+        .ticket-footer {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .ticket-notes {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .ticket-notes i {
+            margin-right: 5px;
+        }
+
+        .cut-line {
+            position: relative;
+            height: 30px;
+            border-top: 2px dashed #aaa;
+            margin: 0 20px;
+        }
+
+        .scissors {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background-color: white;
+            padding: 0 10px;
+            color: #666;
+        }
+
+        .ticket-stub {
+            background-color: #f0f0f0;
+            padding: 15px 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        #qrcode {
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        @@media print {
+            .ticket-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            .cut-line {
+                border-top-style: dashed !important;
+                border-top-width: 2px !important;
+                border-top-color: #aaa !important;
+                padding: 0 !important;
+                height: 20px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> 

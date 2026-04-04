@@ -1,0 +1,186 @@
+@using CinemaBooking.Models.ViewModels
+@{
+    ViewData["Title"] = "Dashboard";
+    var stats = ViewBag.Stats as DashboardViewModel;
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h3>@(stats?.TotalUsers ?? 0)</h3>
+                    <p>Tổng người dùng</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <i class="fas fa-users fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h3>@(stats?.TotalMovies ?? 0)</h3>
+                    <p>Tổng phim</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <i class="fas fa-film fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h3>@(stats?.TotalBookings ?? 0)</h3>
+                    <p>Tổng đặt vé</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <i class="fas fa-ticket-alt fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h3>@((stats?.TotalRevenue ?? 0).ToString("C0", new System.Globalization.CultureInfo("vi-VN")))</h3>
+                    <p>Tổng doanh thu</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Đặt vé gần đây
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (stats?.RecentBookings != null && stats.RecentBookings.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Mã đặt vé</th>
+                                    <th>Khách hàng</th>
+                                    <th>Phim</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var booking in stats.RecentBookings)
+                                {
+                                    <tr>
+                                        <td><strong>#@booking.MaDatVe</strong></td>
+                                        <td>@booking.NguoiDung?.HoTen</td>
+                                        <td>@booking.LichChieu?.Phim?.TenPhim</td>
+                                        <td>@booking.NgayDat?.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@booking.TongTien.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                        <td>
+                                            @if (booking.TrangThai == "Đã thanh toán")
+                                            {
+                                                <span class="badge bg-success">@booking.TrangThai</span>
+                                            }
+                                            else if (booking.TrangThai == "Chờ thanh toán")
+                                            {
+                                                <span class="badge bg-warning">@booking.TrangThai</span>
+                                            }
+                                            else if (booking.TrangThai == "Đã hủy")
+                                            {
+                                                <span class="badge bg-danger">@booking.TrangThai</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@booking.TrangThai</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Chưa có đặt vé nào</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-tools me-2"></i>
+                    Quản lý nhanh
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a asp-area="Admin" asp-controller="Movies" asp-action="Create" class="btn btn-admin">
+                        <i class="fas fa-plus me-2"></i>
+                        Thêm phim mới
+                    </a>
+                    <a asp-controller="LichChieu" asp-action="Create" class="btn btn-admin">
+                        <i class="fas fa-calendar-plus me-2"></i>
+                        Thêm lịch chiếu
+                    </a>
+                    <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-admin">
+                        <i class="fas fa-users-cog me-2"></i>
+                        Quản lý người dùng
+                    </a>
+                    <a asp-controller="AdminBooking" asp-action="Index" class="btn btn-admin">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Xem báo cáo
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Thông tin hệ thống
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h6 class="text-muted">Phiên bản</h6>
+                            <p class="mb-0"><strong>v1.0.0</strong></p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-muted">Cập nhật</h6>
+                        <p class="mb-0"><strong>@DateTime.Now.ToString("dd/MM/yyyy")</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

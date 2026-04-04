@@ -1,0 +1,124 @@
+@model CinemaBooking.Models.ViewModels.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin";
+}
+
+<div class="container" style="padding-top: 120px; min-height: 80vh;">
+    <div class="row g-4">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-4">
+            <div class="glass-panel p-4">
+                <div class="text-center mb-4">
+                    <div class="avatar-circle mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem; background: var(--netflix-red);">
+                        @Model.HoTen?.Substring(0, 1).ToUpper()
+                    </div>
+                    <h4 class="text-white fw-bold mb-1">@Model.HoTen</h4>
+                    <p class="text-white-50 small">@Model.Email</p>
+                </div>
+                
+                <hr class="border-secondary opacity-25">
+
+                <nav class="nav flex-column profile-nav">
+                    <a class="nav-link" asp-action="Index" asp-controller="UserProfile">
+                        <i class="fas fa-user-circle me-2"></i> Hồ sơ cá nhân
+                    </a>
+                    <a class="nav-link active" asp-action="Edit" asp-controller="UserProfile">
+                        <i class="fas fa-user-edit me-2"></i> Chỉnh sửa thông tin
+                    </a>
+                    <a class="nav-link" asp-action="ChangePassword" asp-controller="UserProfile">
+                        <i class="fas fa-key me-2"></i> Đổi mật khẩu
+                    </a>
+
+                <form asp-action="Edit" method="post" enctype="multipart/form-data" class="modern-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                    <div class="row g-5">
+                        <!-- Avatar Upload Section -->
+                        <div class="col-md-4 text-center border-end border-white-10">
+                            <div class="avatar-upload-wrapper mx-auto mb-4">
+                                <div class="avatar-preview-container shadow-glow">
+                                    <img id="avatar-preview" src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "/images/default-avatar.png" : Model.AvatarUrl)" alt="Avatar Preview">
+                                    <div class="upload-overlay">
+                                        <i class="fas fa-camera"></i>
+                                        <span>Thay đổi ảnh</span>
+                                    </div>
+                                    <input asp-for="AvatarFile" type="file" id="AvatarFileInput" accept="image/*" class="file-input-hidden" onchange="previewImage(this)">
+                                </div>
+                                <span asp-validation-for="AvatarFile" class="text-danger small mt-2 d-block"></span>
+                            </div>
+                            <p class="text-white-50 small">Khuyên dùng ảnh vuông, tối đa 2MB.</p>
+                        </div>
+
+                        <!-- Form Fields Section -->
+                        <div class="col-md-8">
+                            <div class="form-floating mb-4 glassy-input-group">
+                                <input asp-for="HoTen" class="form-control glassy-input" placeholder="Họ và tên">
+                                <label asp-for="HoTen" class="text-white-50">Họ và tên</label>
+                                <span asp-validation-for="HoTen" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-floating mb-4 glassy-input-group">
+                                <input asp-for="Email" class="form-control glassy-input" placeholder="Email">
+                                <label asp-for="Email" class="text-white-50">Email</label>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-floating mb-4 glassy-input-group">
+                                <input asp-for="PhoneNumber" class="form-control glassy-input" placeholder="Số điện thoại">
+                                <label asp-for="PhoneNumber" class="text-white-50">Số điện thoại</label>
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="d-flex gap-3 mt-5">
+                                <button type="submit" class="btn btn-netflix px-5 py-3 rounded-pill fw-bold">
+                                    <i class="fas fa-save me-2"></i> Lưu thay đổi
+                                </button>
+                                <a asp-action="Index" class="btn btn-outline-light px-5 py-3 rounded-pill">
+                                    Hủy bỏ
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .profile-nav .nav-link {
+            color: rgba(255,255,255,0.7);
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+        .profile-nav .nav-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+        .profile-nav .nav-link.active {
+            background: rgba(229, 9, 20, 0.1);
+            color: var(--netflix-red);
+            font-weight: bold;
+        }
+        
+        .netflix-form .form-control {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px 15px;
+        }
+        .netflix-form .form-control:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--netflix-red);
+            box-shadow: none;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

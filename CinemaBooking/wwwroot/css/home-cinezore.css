@@ -1,0 +1,625 @@
+/**
+ * CineZore 2026 — Home Page Enhancement CSS
+ * Modern "Meta Web" aesthetic — clean, spatial, cinematic
+ * Overrides netflix-style.css and site.css conflicts
+ */
+
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+:root {
+    --cz-red: #E50914;
+    --cz-red-dim: rgba(229, 9, 20, 0.15);
+    --cz-red-glow: rgba(229, 9, 20, 0.4);
+    --cz-bg: #0a0a0a;
+    --cz-surface: #141414;
+    --cz-card: #1a1a1a;
+    --cz-border: rgba(255, 255, 255, 0.07);
+    --cz-text: #ffffff;
+    --cz-muted: rgba(255, 255, 255, 0.75); /* Increased from 0.5 */
+    --cz-font: 'Outfit', 'Inter', system-ui, sans-serif;
+    --cz-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --cz-ease-out: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ═══════════════════════════════════════════════
+   GLOBAL RESETS FOR HOME
+═══════════════════════════════════════════════ */
+body {
+    font-family: var(--cz-font) !important;
+    background-color: var(--cz-bg) !important;
+    background-image: none !important;
+}
+
+body::before {
+    display: none !important;
+}
+
+main {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Neutralize site.css overrides that break layout */
+main .container,
+body:not(.home-page) main .container,
+body.home-page main .container {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    max-width: none !important;
+}
+
+a:not(.btn) {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+a:not(.btn):hover {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+/* ═══════════════════════════════════════════════
+   NAVBAR — CINEMATIC TRANSPARENT
+═══════════════════════════════════════════════ */
+.navbar-custom {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: none !important;
+    padding: 20px 4% !important;
+    transition: all 0.4s var(--cz-ease) !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+}
+
+.navbar-custom.scrolled {
+    background: rgba(10,10,10,0.98) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid var(--cz-border) !important;
+    padding: 14px 4% !important;
+}
+
+.navbar-brand {
+    font-family: var(--cz-font) !important;
+    font-size: 1.6rem !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.5px !important;
+    color: var(--cz-red) !important;
+    text-decoration: none !important;
+}
+
+.nav-link {
+    font-family: var(--cz-font) !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.2px !important;
+    color: rgba(255,255,255,0.72) !important;
+    transition: color 0.2s ease !important;
+    padding: 6px 14px !important;
+}
+.nav-link:hover { color: #fff !important; }
+
+/* Login button */
+.btn.btn-netflix,
+.btn.btn-netflix.btn-sm {
+    background: var(--cz-red) !important;
+    color: white !important;
+    font-family: var(--cz-font) !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.3px !important;
+    padding: 9px 22px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    transition: all 0.25s ease !important;
+    text-decoration: none !important;
+}
+.btn.btn-netflix:hover,
+.btn.btn-netflix.btn-sm:hover {
+    background: #ff1a2b !important;
+    color: white !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px var(--cz-red-glow) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO SECTION — FULL-BLEED CINEMATIC
+═══════════════════════════════════════════════ */
+.hero-section {
+    position: relative !important;
+    height: 92vh !important;
+    min-height: 600px !important;
+    max-height: 900px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    padding: 0 0 72px 6% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Strong cinematic overlay */
+.hero-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background:
+        linear-gradient(80deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.05) 75%),
+        linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.7) 35%, transparent 60%) !important;
+    z-index: 1 !important;
+}
+
+.hero-content {
+    position: relative !important;
+    z-index: 2 !important;
+    max-width: 560px !important;
+}
+
+/* Featured badge */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cz-red);
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border-radius: 2px;
+}
+
+/* Movie title */
+.hero-content h1.display-2 {
+    font-family: var(--cz-font) !important;
+    font-size: clamp(1.8rem, 3.5vw, 3.2rem) !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -1px !important;
+    color: #fff !important;
+    margin-bottom: 12px !important;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.8), 0 0 50px rgba(0,0,0,0.4) !important;
+    word-break: break-word !important;
+}
+
+/* Badges row */
+.hero-meta-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-meta-badges .badge {
+    font-family: var(--cz-font) !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    padding: 5px 12px !important;
+    border-radius: 3px !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    background: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.85) !important;
+    letter-spacing: 0.3px !important;
+    backdrop-filter: blur(6px) !important;
+}
+
+/* Description */
+.hero-content p.lead {
+    font-family: var(--cz-font) !important;
+    font-size: 0.95rem !important; /* Slightly larger */
+    line-height: 1.7 !important;
+    color: rgba(255,255,255,0.85) !important; /* Brighter from 0.65 */
+    font-weight: 400 !important;
+    margin-bottom: 28px !important;
+    max-width: 460px !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9) !important; /* Stronger shadow */
+}
+
+/* CTA Buttons */
+.hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hero-cta .btn-netflix {
+    background: var(--cz-red) !important;
+    color: white !important;
+    font-family: var(--cz-font) !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    padding: 14px 30px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+    letter-spacing: 0.3px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.hero-cta .btn-netflix:hover {
+    background: #ff1a2b !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px var(--cz-red-glow) !important;
+}
+
+.hero-cta .btn-netflix-gray {
+    background: rgba(255,255,255,0.12) !important;
+    color: white !important;
+    font-family: var(--cz-font) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    padding: 14px 28px !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(255,255,255,0.18) !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(6px) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.hero-cta .btn-netflix-gray:hover {
+    background: rgba(255,255,255,0.2) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MOVIE ROWS CONTAINER
+═══════════════════════════════════════════════ */
+.movie-rows-container {
+    background: var(--cz-bg) !important;
+    position: relative !important;
+    z-index: 5 !important;
+    margin-top: 0 !important;
+    padding: 0 0 80px !important; /* Increased padding */
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION TITLES — MINIMAL MODERN
+═══════════════════════════════════════════════ */
+.section-title {
+    font-family: var(--cz-font) !important;
+    font-size: 1.15rem !important; /* Larger */
+    font-weight: 800 !important; /* Bolder */
+    letter-spacing: 0.5px !important;
+    color: #ffffff !important; /* Full white */
+    padding: 32px 4% 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    line-height: 1 !important;
+    /* Clear old site.css styles */
+    position: static !important;
+}
+
+.section-title::before {
+    content: '' !important;
+    display: inline-block !important;
+    width: 3px !important;
+    height: 1em !important;
+    background: var(--cz-red) !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Remove old pseudo-element underline from site.css */
+.section-title::after {
+    display: none !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MOVIE ROW WRAPPER & NAVIGATION BUTTONS
+═══════════════════════════════════════════════ */
+.movie-row-wrapper {
+    position: relative !important;
+    margin-top: 10px !important;
+}
+
+.nav-btn {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 45px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 1.2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    opacity: 0 !important; /* Hide by default */
+    transition: all 0.35s ease !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.movie-row-wrapper:hover .nav-btn {
+    opacity: 1 !important;
+}
+
+.nav-btn.prev { left: 0 !important; }
+.nav-btn.next { right: 0 !important; }
+
+.nav-btn:hover {
+    background: rgba(229, 9, 20, 0.4) !important;
+    width: 55px !important; /* Expansion effect */
+}
+
+/* ═══════════════════════════════════════════════
+   MOVIE ROW — HORIZONTAL SCROLL WITH SNAPPING
+═══════════════════════════════════════════════ */
+.movie-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    padding: 16px 4% 32px !important;
+    gap: 12px !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    scroll-snap-type: x mandatory !important; /* Magnetic snapping */
+    scroll-behavior: smooth !important;
+}
+
+.movie-row::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MOVIE CARDS — PORTRAIT POSTER STYLE
+═══════════════════════════════════════════════ */
+.movie-card {
+    flex: 0 0 170px !important;
+    width: 170px !important;
+    height: 250px !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    background: var(--cz-card) !important;
+    cursor: pointer !important;
+    transition:
+        transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.35s ease !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
+    scroll-snap-align: start !important; /* Align cards during snap */
+}
+
+.movie-card:hover {
+    transform: scale(1.08) translateY(-6px) !important;
+    z-index: 100 !important;
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.7),
+        0 0 0 1.5px rgba(229,9,20,0.5) !important;
+}
+
+.movie-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    transition: transform 0.4s ease !important;
+}
+
+.movie-card:hover img {
+    transform: scale(1.06) !important;
+}
+
+/* Hover overlay */
+.movie-card .card-content {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 50px 12px 12px !important;
+    background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.7) 40%, transparent 100%) !important;
+    opacity: 0 !important;
+    transform: translateY(4px) !important;
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+.movie-card:hover .card-content {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.movie-card .card-content h6 {
+    font-family: var(--cz-font) !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+    color: #fff !important;
+    line-height: 1.3 !important;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5) !important;
+}
+
+.movie-card .card-content .small {
+    font-family: var(--cz-font) !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.2px !important;
+}
+
+/* Quick book button on hover */
+.movie-card-book-btn {
+    display: block;
+    width: calc(100% - 24px);
+    margin: 8px 12px 0;
+    padding: 7px 0;
+    background: var(--cz-red);
+    color: white !important;
+    font-size: 0.72rem !important; /* Larger */
+    font-weight: 900 !important;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    box-shadow: 0 4px 10px rgba(229, 9, 20, 0.4) !important; /* High contrast glow */
+    text-decoration: none !important;
+    transition: background 0.2s ease;
+}
+
+.movie-card-book-btn:hover {
+    background: #ff1a2b;
+    color: white !important;
+}
+
+/* ═══════════════════════════════════════════════
+   FEATURED SECTION — "NOW SHOWING" HIGHLIGHT
+═══════════════════════════════════════════════ */
+.now-showing-section {
+    padding: 40px 4% 0;
+}
+
+.now-showing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+/* ═══════════════════════════════════════════════
+   PROMO BANNER — "BECOME MEMBER" STRIP
+═══════════════════════════════════════════════ */
+.promo-strip {
+    margin: 40px 4%;
+    padding: 28px 36px;
+    background: linear-gradient(135deg, rgba(229,9,20,0.12) 0%, rgba(229,9,20,0.04) 100%);
+    border: 1px solid rgba(229,9,20,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.promo-strip-text h3 {
+    font-family: var(--cz-font);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.promo-strip-text p {
+    font-size: 0.82rem;
+    color: var(--cz-muted);
+    margin: 0;
+}
+
+.promo-strip .btn-cta {
+    background: var(--cz-red);
+    color: white;
+    font-family: var(--cz-font);
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 11px 28px;
+    border-radius: 4px;
+    border: none;
+    white-space: nowrap;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+}
+
+.promo-strip .btn-cta:hover {
+    background: #ff1a2b;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--cz-red-glow);
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER UPGRADE
+═══════════════════════════════════════════════ */
+footer {
+    background: var(--cz-bg) !important;
+    border-top: 1px solid var(--cz-border) !important;
+    padding: 32px 4% !important;
+    margin-top: 0 !important;
+}
+
+footer p {
+    font-family: var(--cz-font) !important;
+    font-size: 0.8rem !important;
+    color: rgba(255,255,255,0.55) !important; /* Much brighter from 0.3 */
+    margin: 0 !important;
+}
+
+footer a {
+    color: rgba(255,255,255,0.3) !important;
+    transition: color 0.2s ease !important;
+    font-size: 1rem !important;
+}
+
+footer a:hover {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE ADJUSTMENTS
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 70vh !important;
+        padding: 0 0 48px 5% !important;
+    }
+
+    .hero-content h1.display-2 {
+        font-size: 1.8rem !important;
+    }
+
+    .movie-card {
+        flex: 0 0 140px !important;
+        width: 140px !important;
+        height: 210px !important;
+    }
+
+    .promo-strip {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        height: 60vh !important;
+        align-items: flex-end !important;
+        padding: 0 0 36px 4% !important;
+    }
+
+    .movie-card {
+        flex: 0 0 120px !important;
+        width: 120px !important;
+        height: 180px !important;
+    }
+}
