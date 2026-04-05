@@ -116,12 +116,12 @@ builder.Services.AddHostedService<LichChieuCleanupService>();
 
 // Configure external authentication providers
 builder.Services.AddAuthentication()
-.AddGoogle(options =>
-{
-    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    options.CallbackPath = "/signin-google";
-});
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? throw new InvalidOperationException("Google ClientId not configured.");
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? throw new InvalidOperationException("Google ClientSecret not configured.");
+        options.CallbackPath = "/signin-google";
+    });
 
 // Configure authorization policies
 builder.Services.AddAuthorization(options =>
