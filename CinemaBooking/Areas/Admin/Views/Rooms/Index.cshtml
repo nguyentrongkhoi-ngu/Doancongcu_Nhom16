@@ -1,0 +1,100 @@
+@model IEnumerable<CinemaBooking.Models.PhongChieu>
+@{
+    ViewData["Title"] = "Quản lý Phòng chiếu - " + ViewBag.CinemaName;
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Quản lý Phòng chiếu</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Cinemas" asp-action="Index">Rạp phim</a></li>
+        <li class="breadcrumb-item active">@ViewBag.CinemaName</li>
+    </ol>
+
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-door-open me-1"></i>
+                Danh sách phòng chiếu của <strong>@ViewBag.CinemaName</strong>
+            </div>
+            <a asp-action="Create" asp-route-cinemaId="@ViewBag.CinemaId" class="btn btn-primary btn-sm rounded-pill px-3">
+                <i class="fas fa-plus me-1"></i> Thêm phòng mới
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">Số phòng</th>
+                            <th>Loại phòng</th>
+                            <th>Sức chứa</th>
+                            <th>Kích thước grid</th>
+                            <th class="text-end pe-4">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 font-weight-bold">Phòng @item.SoPhong</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@(item.LoaiPhong ?? "Tiêu chuẩn")</span>
+                                    </td>
+                                    <td>@item.SucChua ghế</td>
+                                    <td><span class="text-muted small">@item.SoHang x @item.SoCot</span></td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="DesignSeats" asp-route-id="@item.MaPhong" class="btn btn-outline-success" title="Thiết kế sơ đồ ghế">
+                                                <i class="fas fa-th"></i> Sơ đồ ghế
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.MaPhong" class="btn btn-outline-primary" title="Sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-outline-danger" onclick="deleteRoom(@item.MaPhong)" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                    Chưa có phòng chiếu nào.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function deleteRoom(id) {
+            Swal.fire({
+                title: 'Xác nhận xóa?',
+                text: "Dữ liệu ghế và lịch chiếu liên quan cũng sẽ bị ảnh hưởng!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Có, xóa ngay!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Logic xóa async ở đây
+                }
+            })
+        }
+    </script>
+}

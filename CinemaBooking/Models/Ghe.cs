@@ -24,6 +24,12 @@ namespace CinemaBooking.Models
         [StringLength(20)]
         public string LoaiGhe { get; set; } = "Thường"; // Giá trị mặc định là "Thường", có thể là "VIP" hoặc "Sweetbox"
 
+        [Column("hang")]
+        public int Hang { get; set; }
+
+        [Column("cot")]
+        public int Cot { get; set; }
+
         [ForeignKey("MaPhong")]
         public virtual PhongChieu PhongChieu { get; set; } = null!;
 
