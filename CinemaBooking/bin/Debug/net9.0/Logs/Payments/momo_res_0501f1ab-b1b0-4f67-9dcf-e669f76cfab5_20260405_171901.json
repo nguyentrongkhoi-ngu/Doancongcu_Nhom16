@@ -1,0 +1,13 @@
+﻿{
+  "partnerCode": "MOMO",
+  "orderId": "31-639110063414392261",
+  "requestId": "0501f1ab-b1b0-4f67-9dcf-e669f76cfab5",
+  "amount": 95000,
+  "responseTime": 1775384358872,
+  "message": "Th\u00E0nh c\u00F4ng.",
+  "resultCode": 0,
+  "payUrl": "https://test-payment.momo.vn/v2/gateway/pay?t=TU9NT3wzMS02MzkxMTAwNjM0MTQzOTIyNjE\u0026s=54f4f63395c5c66fe1c620810744a54513f96a1d1149e4e3f526d9876991896e",
+  "deeplink": "momo://app?action=payWithApp\u0026isScanQR=false\u0026scanQR=false\u0026serviceType=app\u0026sid=TU9NT3wzMS02MzkxMTAwNjM0MTQzOTIyNjE\u0026v=3.0",
+  "qrCodeUrl": "momo://app?action=payWithApp\u0026isScanQR=true\u0026scanQR=true\u0026serviceType=qr\u0026sid=TU9NT3wzMS02MzkxMTAwNjM0MTQzOTIyNjE\u0026v=3.0\u0026sr=0\u0026sig=tnxIcH6CJ2OYODP",
+  "deeplinkMiniApp": "momo://app?action=payWithApp\u0026isScanQR=false\u0026scanQR=false\u0026serviceType=miniapp\u0026sid=TU9NT3wzMS02MzkxMTAwNjM0MTQzOTIyNjE\u0026v=3.0"
+}

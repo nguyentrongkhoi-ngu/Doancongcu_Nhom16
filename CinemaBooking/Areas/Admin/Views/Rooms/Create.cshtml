@@ -1,0 +1,78 @@
+@model CinemaBooking.Models.PhongChieu
+@{
+    ViewData["Title"] = "Thêm phòng chiếu mới";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Thêm phòng mới</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index" asp-route-cinemaId="@ViewBag.CinemaId">Quản lý phòng chiếu</a></li>
+        <li class="breadcrumb-item active">Thêm mới</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <i class="fas fa-plus me-1 text-primary"></i> <strong>Thông tin phòng</strong>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                        <input type="hidden" asp-for="MaRap" />
+
+                        <div class="mb-3">
+                            <label asp-for="SoPhong" class="form-label font-weight-bold small text-muted text-uppercase">Số phòng / Tên phòng</label>
+                            <input asp-for="SoPhong" class="form-control rounded-pill border-light bg-light" placeholder="Ví dụ: 1" required />
+                            <small class="text-muted">Tên phòng hiển thị cho người dùng.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LoaiPhong" class="form-label font-weight-bold small text-muted text-uppercase">Loai phòng</label>
+                            <select asp-for="LoaiPhong" class="form-select rounded-pill border-light bg-light">
+                                <option value="Tiêu chuẩn">Tiêu chuẩn</option>
+                                <option value="IMAX">IMAX</option>
+                                <option value="4DX">4DX</option>
+                                <option value="Gold Class">Gold Class</option>
+                            </select>
+                        </div>
+
+                        <hr />
+                        <h6>Cấu hình lưới ghế ban đầu</h6>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label asp-for="SoHang" class="form-label font-weight-bold small text-muted text-uppercase">Số hàng ghế</label>
+                                <input asp-for="SoHang" type="number" class="form-control rounded-pill border-light bg-light" value="10" min="1" max="50" required />
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label asp-for="SoCot" class="form-label font-weight-bold small text-muted text-uppercase">Số cột ghế</label>
+                                <input asp-for="SoCot" type="number" class="form-control rounded-pill border-light bg-light" value="12" min="1" max="50" required />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <a asp-action="Index" asp-route-cinemaId="@ViewBag.CinemaId" class="btn btn-light rounded-pill px-4">Hủy bo</a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                                <i class="fas fa-save me-1"></i> Lưu & Thiết kế sơ đồ ghế
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="alert alert-info border-0 shadow-sm rounded-4 p-4">
+                <h5><i class="fas fa-info-circle me-1"></i> Lưu ý:</h5>
+                <p>Sau khi nhấn <strong>Lưu</strong>, bạn sẽ được chuyển đến trang <strong>Thiết kế sơ đồ ghế</strong>. Tại đó, bạn có thể:</p>
+                <ul>
+                    <li>Đặt loại ghế (VIP, Sweetbox, thường).</li>
+                    <li>Xóa bỏ các ô trống để tạo lối đi.</li>
+                    <li>Điều chỉnh kích thước tổng thể của sơ đồ.</li>
+                </ul>
+                <p class="mb-0">Sức chứa của phòng sẽ tự động được tính dựa trên số lượng ghế thực tế bạn đặt trong sơ đồ.</p>
+            </div>
+        </div>
+    </div>
+</div>
