@@ -83,6 +83,7 @@
     .tt-page {
         padding-bottom: 80px !important;
         max-width: 1000px;
+        min-height: calc(100vh - 150px);
         display: flex;
         flex-direction: column;
     }
@@ -121,7 +122,7 @@
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--cz-border);
         border-radius: var(--cz-radius);
-        padding: 20px;
+        padding: 28px 24px;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -129,15 +130,15 @@
     }
 
     .tt-panel__title {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 2px;
         color: var(--cz-text-muted);
-        margin-bottom: 16px;
+        margin-bottom: 24px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
     }
     .tt-panel__title::after { content: ''; flex: 1; height: 1px; background: var(--cz-border); }
 
@@ -149,9 +150,9 @@
     }
 
     .tt-poster {
-        width: 75px;
-        height: 110px;
-        border-radius: 10px;
+        width: 100px;
+        height: 145px;
+        border-radius: 12px;
         object-fit: cover;
         box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         flex-shrink: 0;
@@ -161,11 +162,11 @@
     .tt-info { flex: 1; display: flex; flex-direction: column; }
 
     .tt-movie-title {
-        font-size: 1.3rem;
+        font-size: 1.7rem;
         font-weight: 950;
         line-height: 1.1;
         letter-spacing: -0.5px;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
         background: linear-gradient(to bottom, #fff, #bbb);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -206,7 +207,7 @@
     }
 
     .tt-final-price {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         font-weight: 950;
         color: var(--cz-accent);
         line-height: 1;
@@ -225,12 +226,12 @@
         background: rgba(255,255,255,0.02);
         border: 2px solid transparent;
         border-radius: 16px;
-        padding: 12px;
+        padding: 20px 12px;
         display: flex;
         flex-direction: column; /* Vertical alignment */
         align-items: center;
         text-align: center;
-        gap: 8px;
+        gap: 10px;
         cursor: pointer;
         transition: all 0.3s var(--cz-ease);
         position: relative;
@@ -410,7 +411,7 @@
 
 <div class="tt-ambient" style="background-image: url('@posterUrl');"></div>
 
-<div class="container tt-page" style="margin-top: 110px;">
+<div class="container tt-page">
     
     <div class="tt-header-bar">
         
@@ -461,7 +462,6 @@
                 </div>
 
                 <div class="tt-breakdown">
-                    <div class="tt-breakdown-row">
                         <span>Giá vé (@ticketCount vé)</span>
                         <span>@seatTotal.ToString("N0")đ</span>
                     </div>

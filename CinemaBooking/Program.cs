@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.FileProviders;
 using CinemaBooking.Models.Services;
 using CinemaBooking.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Thiết lập mã hóa UTF-8 cho console để hiển thị tiếng Việt
@@ -100,16 +101,25 @@ builder.Services.AddHttpContextAccessor();
 // Thêm HttpClient
 builder.Services.AddHttpClient();
 
-// Thêm Dummy EmailService và OtpService cho Identity Account Controller
+// Thêm dịch vụ MomoService
+builder.Services.AddScoped<MomoService>();
+
+// Thêm dịch vụ PaymentLogger
+builder.Services.AddScoped<PaymentLogger>();
+
+// Thêm dịch vụ EmailService và OtpService
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<OtpService>();
+
+// Thêm dịch vụ nền xử lý lịch chiếu
+builder.Services.AddHostedService<LichChieuCleanupService>();
 
 // Configure external authentication providers
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "YOUR_CLIENT_ID";
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "YOUR_CLIENT_SECRET";
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "placeholder1";
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "placeholder2";
         options.CallbackPath = "/signin-google";
     });
 
@@ -178,7 +188,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
+app.MapHub<CinemaBooking.Hubs.BookingHub>("/bookingHub");
 
 // Seed dữ liệu mẫu
 using (var scope = app.Services.CreateScope())

@@ -21,7 +21,7 @@ namespace CinemaBooking.Models
         [Column("phan_tram_giam")]
         public int PhanTramGiam { get; set; }
 
-        [Column("gia_tri_toi_thieu")]
+        [Column("gia_tri_toi_thieu", TypeName = "decimal(18,2)")]
         [Display(Name = "Giá trị đơn hàng tối thiểu")]
         public decimal GiaTriToiThieu { get; set; } = 0;
 
