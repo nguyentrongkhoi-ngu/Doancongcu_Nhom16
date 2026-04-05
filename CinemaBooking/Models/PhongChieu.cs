@@ -27,6 +27,12 @@ namespace CinemaBooking.Models
         [StringLength(50)]
         public string? LoaiPhong { get; set; }
 
+        [Column("so_hang")]
+        public int SoHang { get; set; }
+
+        [Column("so_cot")]
+        public int SoCot { get; set; }
+
         [ForeignKey("MaRap")]
         public virtual RapPhim RapPhim { get; set; }
 
