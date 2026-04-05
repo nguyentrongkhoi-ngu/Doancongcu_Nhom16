@@ -5,14 +5,13 @@ on:
     branches:
       - main
       - develop
-      - feature/nguyentrongkhoi # Bạn đang làm việc trên nhánh này
   pull_request:
     branches:
       - main
       - develop
 
 jobs:
-  # 1. Kiểm tra định dạng Code (Lint & Format)
+  # Giai đoạn 1: Kiểm tra định dạng Code
   lint:
     name: Lint & Format
     runs-on: ubuntu-latest
@@ -28,7 +27,7 @@ jobs:
       - name: Verify Formatting
         run: dotnet format CinemaBooking/CinemaBooking.csproj --verify-no-changes
 
-  # 2. Xây dựng và Chạy Unit Test (Build & Test)
+  # Giai đoạn 2: Build và Test (Đảm bảo code không có lỗi logic)
   build-and-test:
     name: Build & Test
     needs: lint
@@ -42,31 +41,23 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore Dependencies
-        run: dotnet restore CinemaBooking/CinemaBooking.csproj
-
-      - name: Build Project
-        run: dotnet build CinemaBooking/CinemaBooking.csproj --configuration Release --no-restore
+      - name: Restore & Build
+        run: |
+          dotnet restore CinemaBooking/CinemaBooking.csproj
+          dotnet build CinemaBooking/CinemaBooking.csproj --configuration Release --no-restore
 
       - name: Run Unit Tests
-        run: dotnet test CinemaBooking/CinemaBooking.csproj --configuration Release --no-build --verbosity normal
+        run: dotnet test CinemaBooking/CinemaBooking.csproj --configuration Release --no-build
 
-  # 3. Đóng gói Docker và Đẩy lên Docker Hub (Docker Build & Push)
+  # Giai đoạn 3: Đóng gói Docker (Chỉ chạy khi push vào main/develop)
   docker-build-push:
     name: Docker Build & Push
     needs: build-and-test
     runs-on: ubuntu-latest
-    # Chỉ chạy stage này trên nhánh main, develop hoặc feature của bạn
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/feature/nguyentrongkhoi'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -74,54 +65,45 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Determine Docker Tag
-        id: tag
+      - name: Set Image Tag
+        id: vars
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "TAG=latest" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "TAG=staging" >> $GITHUB_OUTPUT
           else
-            echo "TAG=dev-khoi" >> $GITHUB_OUTPUT
+            echo "TAG=staging" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build and Push Docker Image
+      - name: Build and Push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./CinemaBooking/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cinemabooking:${{ steps.tag.outputs.TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cinemabooking:${{ steps.vars.outputs.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # 4. Quét bảo mật (Security Scan - Trivy)
+  # Giai đoạn 4: Quét bảo mật (Security Scan)
   security-scan:
-    name: Security Scan (Trivy)
+    name: Security Scan
     needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ secrets.DOCKERHUB_USERNAME }}/cinemabooking:dev-khoi'
+          image-ref: '${{ secrets.DOCKERHUB_USERNAME }}/cinemabooking:latest'
           format: 'table'
-          exit-code: '0'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
-  # 5. Triển khai lên Server (Deploy to Production)
+  # Giai đoạn 5: Tự động triển khai (Deploy - Chỉ chạy khi push vào main)
   deploy:
     name: Deploy to Production
     needs: security-scan
     runs-on: ubuntu-latest
-    # Chỉ deploy trên nhánh main (Production)
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -132,4 +114,3 @@ jobs:
             cd /opt/cinemabooking
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
-            docker system prune -f
