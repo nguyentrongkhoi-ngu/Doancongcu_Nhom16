@@ -188,8 +188,6 @@ namespace CinemaBooking.Data
                 entity.Property(e => e.MaRap).HasColumnName("ma_rap").IsRequired();
                 entity.Property(e => e.SoPhong).HasColumnName("so_phong").IsRequired();
                 entity.Property(e => e.SucChua).HasColumnName("suc_chua").IsRequired();
-                entity.Property(e => e.SoHang).HasColumnName("so_hang");
-                entity.Property(e => e.SoCot).HasColumnName("so_cot");
 
                 // Quan hệ với RapPhim
                 entity.HasOne(e => e.RapPhim)
@@ -207,8 +205,6 @@ namespace CinemaBooking.Data
                 entity.Property(e => e.MaPhong).HasColumnName("ma_phong").IsRequired();
                 entity.Property(e => e.SoGhe).HasColumnName("so_ghe").HasMaxLength(10).IsRequired();
                 entity.Property(e => e.LoaiGhe).HasColumnName("loai_ghe").HasMaxLength(20).IsRequired().HasDefaultValue("Thường");
-                entity.Property(e => e.Hang).HasColumnName("hang");
-                entity.Property(e => e.Cot).HasColumnName("cot");
 
                 // Quan hệ với PhongChieu
                 entity.HasOne(e => e.PhongChieu)
