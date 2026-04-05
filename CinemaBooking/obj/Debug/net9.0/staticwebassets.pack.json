@@ -1,0 +1,413 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\CinemaBooking.bundle.scp.css",
+      "PackagePath": "staticwebassets\\CinemaBooking.3akhv4wju1.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\admin.css",
+      "PackagePath": "staticwebassets\\css\\admin.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\auth-obsidian.css",
+      "PackagePath": "staticwebassets\\css\\auth-obsidian.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\effects.css",
+      "PackagePath": "staticwebassets\\css\\effects.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\home-cinezore.css",
+      "PackagePath": "staticwebassets\\css\\home-cinezore.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\movies.css",
+      "PackagePath": "staticwebassets\\css\\movies.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\netflix-style.css",
+      "PackagePath": "staticwebassets\\css\\netflix-style.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\override.css",
+      "PackagePath": "staticwebassets\\css\\override.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\schedules.css",
+      "PackagePath": "staticwebassets\\css\\schedules.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\css\\theme.css",
+      "PackagePath": "staticwebassets\\css\\theme.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\CineZore-background.png",
+      "PackagePath": "staticwebassets\\images\\CineZore-background.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\Combo đặc biệt cho cặp đôi.png",
+      "PackagePath": "staticwebassets\\images\\Combo đặc biệt cho cặp đôi.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\Gemini_Generated_Image_qza21qqza21qqza2.png",
+      "PackagePath": "staticwebassets\\images\\Gemini_Generated_Image_qza21qqza21qqza2.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\Gemini_Generated_Image_w8fesvw8fesvw8fe.png",
+      "PackagePath": "staticwebassets\\images\\Gemini_Generated_Image_w8fesvw8fesvw8fe.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\Gia đình vui vẻ cùng combo mới!.png",
+      "PackagePath": "staticwebassets\\images\\Gia đình vui vẻ cùng combo mới!.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\LiesOfP.jpg",
+      "PackagePath": "staticwebassets\\images\\LiesOfP.jpg"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\cinema-background.jpg",
+      "PackagePath": "staticwebassets\\images\\cinema-background.jpg"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\cinezore-logo.png",
+      "PackagePath": "staticwebassets\\images\\cinezore-logo.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\imagescinezore-logo.png",
+      "PackagePath": "staticwebassets\\images\\imagescinezore-logo.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\momo-logo.png",
+      "PackagePath": "staticwebassets\\images\\momo-logo.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\momo-logo.svg",
+      "PackagePath": "staticwebassets\\images\\momo-logo.svg"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\ticket-sample.png",
+      "PackagePath": "staticwebassets\\images\\ticket-sample.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\vnpay-logo.png",
+      "PackagePath": "staticwebassets\\images\\vnpay-logo.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\images\\vnpay-logo.svg",
+      "PackagePath": "staticwebassets\\images\\vnpay-logo.svg"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\js\\effects.js",
+      "PackagePath": "staticwebassets\\js\\effects.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\js\\theme-switcher.js",
+      "PackagePath": "staticwebassets\\js\\theme-switcher.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.js"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\posters\\Annabelle-_Ác_quỷ_trở_về_poster.jpeg",
+      "PackagePath": "staticwebassets\\posters\\Annabelle-_Ác_quỷ_trở_về_poster.jpeg"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\sounds\\note.txt",
+      "PackagePath": "staticwebassets\\sounds\\note.txt"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\trailers\\feb8cb56-4f81-4308-af3c-854599be534e.jpeg",
+      "PackagePath": "staticwebassets\\trailers\\feb8cb56-4f81-4308-af3c-854599be534e.jpeg"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\uploads\\avatars\\911661a3-3f09-4845-a35a-2ed7656cacea_Rimuru Rimuru Tempest GIF - Rimuru Rimuru Tempest Tensura - Discover & Share GIFs.gif",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\911661a3-3f09-4845-a35a-2ed7656cacea_Rimuru Rimuru Tempest GIF - Rimuru Rimuru Tempest Tensura - Discover & Share GIFs.gif"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\uploads\\combos\\4cd91ddc-64d8-47ef-9fbb-65b82260ebf5.png",
+      "PackagePath": "staticwebassets\\uploads\\combos\\4cd91ddc-64d8-47ef-9fbb-65b82260ebf5.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\uploads\\combos\\a4895280-60ab-4c90-9320-cd472f7847bb.png",
+      "PackagePath": "staticwebassets\\uploads\\combos\\a4895280-60ab-4c90-9320-cd472f7847bb.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\uploads\\combos\\ca8a37e6-95e1-4e47-a37a-78ca7ef61e09.png",
+      "PackagePath": "staticwebassets\\uploads\\combos\\ca8a37e6-95e1-4e47-a37a-78ca7ef61e09.png"
+    },
+    {
+      "Id": "D:\\CinemaBooking_X2\\CinemaBooking\\wwwroot\\uploads\\combos\\eeb5ca0a-8f51-4114-8031-a86d62b3ee67.png",
+      "PackagePath": "staticwebassets\\uploads\\combos\\eeb5ca0a-8f51-4114-8031-a86d62b3ee67.png"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.CinemaBooking.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.CinemaBooking.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.CinemaBooking.props",
+      "PackagePath": "build\\CinemaBooking.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.CinemaBooking.props",
+      "PackagePath": "buildMultiTargeting\\CinemaBooking.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.CinemaBooking.props",
+      "PackagePath": "buildTransitive\\CinemaBooking.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

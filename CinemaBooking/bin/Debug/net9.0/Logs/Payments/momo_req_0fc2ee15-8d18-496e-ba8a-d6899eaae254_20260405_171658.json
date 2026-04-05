@@ -1,0 +1,15 @@
+﻿{
+  "partnerCode": "MOMO",
+  "partnerName": "Cinema Booking",
+  "storeId": "MOMO",
+  "requestId": "0fc2ee15-8d18-496e-ba8a-d6899eaae254",
+  "amount": "95000",
+  "orderId": "30-639110062181013719",
+  "orderInfo": "Thanh to\u00E1n v\u00E9 xem phim: Godzilla x Kong: The New Empire",
+  "redirectUrl": "http://localhost:5153/ThanhToan/MomoReturn",
+  "ipnUrl": "http://localhost:5153/ThanhToan/MomoNotify",
+  "lang": "vi",
+  "extraData": "",
+  "requestType": "captureWallet",
+  "signature": "06b61678571f59230825d7e0941456f9b76a4b4a66315385a0f691594d3fa1d3"
+}
