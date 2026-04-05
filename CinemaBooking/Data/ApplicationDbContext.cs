@@ -23,6 +23,8 @@ namespace CinemaBooking.Data
         public DbSet<DatVe> DatVes { get; set; }
         public DbSet<DatVeGhe> DatVeGhes { get; set; }
         public DbSet<KhuyenMai> KhuyenMais { get; set; }
+        public DbSet<Combo> Combos { get; set; }
+        public DbSet<DatVeCombo> DatVeCombos { get; set; }
         public DbSet<ThanhToan> ThanhToans { get; set; }
         public DbSet<DanhGia> DanhGias { get; set; }
         public DbSet<LichSuGiaoDich> LichSuGiaoDiches { get; set; }
@@ -146,6 +148,7 @@ namespace CinemaBooking.Data
                 entity.Property(e => e.UrlPoster).HasColumnName("url_poster").HasMaxLength(255);
                 entity.Property(e => e.DinhDang).HasColumnName("dinh_dang").HasMaxLength(20);
                 entity.Property(e => e.Trailer).HasColumnName("trailer").HasMaxLength(255);
+                entity.Property(e => e.TrangThai).HasColumnName("trang_thai").HasMaxLength(50);
             });
 
             // Mapping cho NgonNguPhim
@@ -252,6 +255,7 @@ namespace CinemaBooking.Data
                 entity.Property(e => e.PhanTramGiam).HasColumnName("phan_tram_giam").IsRequired();
                 entity.Property(e => e.NgayBatDau).HasColumnName("ngay_bat_dau").IsRequired();
                 entity.Property(e => e.NgayKetThuc).HasColumnName("ngay_ket_thuc").IsRequired();
+                entity.Property(e => e.GiaTriToiThieu).HasColumnName("gia_tri_toi_thieu").HasColumnType("decimal(18,2)").HasDefaultValue(0);
                 entity.Property(e => e.MoTa).HasColumnName("mo_ta").HasMaxLength(255);
             });
 
@@ -336,6 +340,45 @@ namespace CinemaBooking.Data
                     .WithMany(d => d.ThanhToans)
                     .HasForeignKey(e => e.MaDatVe)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Mapping cho Combo
+            modelBuilder.Entity<Combo>(entity =>
+            {
+                entity.ToTable("combo");
+                entity.HasKey(e => e.MaCombo);
+                entity.Property(e => e.MaCombo).HasColumnName("ma_combo").ValueGeneratedOnAdd();
+                entity.Property(e => e.TenCombo).HasColumnName("ten_combo").HasMaxLength(100).IsRequired();
+                entity.Property(e => e.MoTa).HasColumnName("mo_ta");
+                entity.Property(e => e.Gia).HasColumnName("gia").HasColumnType("decimal(10,2)").IsRequired();
+                entity.Property(e => e.HinhAnh).HasColumnName("hinh_anh").HasMaxLength(255);
+                entity.Property(e => e.Loai).HasColumnName("loai").HasMaxLength(50);
+                entity.Property(e => e.TrangThai).HasColumnName("trang_thai").HasDefaultValue(true);
+                entity.Property(e => e.SoLuongTon).HasColumnName("so_luong_ton").HasDefaultValue(999);
+                entity.Property(e => e.UuTien).HasColumnName("uu_tien").HasDefaultValue(0);
+                entity.Property(e => e.Nhan).HasColumnName("nhan").HasMaxLength(50);
+            });
+
+            // Mapping cho DatVeCombo
+            modelBuilder.Entity<DatVeCombo>(entity =>
+            {
+                entity.ToTable("dat_ve_combo");
+                entity.HasKey(e => new { e.MaDatVe, e.MaCombo });
+                entity.Property(e => e.MaDatVe).HasColumnName("ma_dat_ve");
+                entity.Property(e => e.MaCombo).HasColumnName("ma_combo");
+                entity.Property(e => e.SoLuong).HasColumnName("so_luong").IsRequired();
+
+                // Quan hệ với DatVe
+                entity.HasOne(e => e.DatVe)
+                    .WithMany(d => d.DatVeCombos)
+                    .HasForeignKey(e => e.MaDatVe)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Quan hệ với Combo
+                entity.HasOne(e => e.Combo)
+                    .WithMany(c => c.DatVeCombos)
+                    .HasForeignKey(e => e.MaCombo)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Mapping cho DanhGia

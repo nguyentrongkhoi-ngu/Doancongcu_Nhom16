@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CinemaBooking.Data;
 using CinemaBooking.Models;
+using System.Security.Claims;
 
 namespace CinemaBooking.Areas.Admin.Controllers
 {
@@ -28,115 +29,119 @@ namespace CinemaBooking.Areas.Admin.Controllers
         // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
+            var roles = await _roleManager.Roles.ToListAsync();
             var users = await _userManager.Users
-                .OrderBy(u => u.UserName)
+                .OrderByDescending(u => u.NgayTao)
                 .ToListAsync();
 
             var userViewModels = new List<object>();
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(user);
                 userViewModels.Add(new
                 {
                     User = user,
-                    Roles = roles
+                    Roles = userRoles
                 });
             }
 
+            ViewBag.AllRoles = roles;
             ViewBag.Users = userViewModels;
             return View();
         }
 
-        // GET: Admin/Users/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: Admin/Users/GetUser/5 (For Modal)
+        [HttpGet]
+        public async Task<IActionResult> GetUser(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            if (user == null) return NotFound();
 
             var roles = await _userManager.GetRolesAsync(user);
-            ViewBag.Roles = roles;
-
-            return View(user);
+            return Json(new { 
+                id = user.Id, 
+                userName = user.UserName, 
+                email = user.Email, 
+                hoTen = user.HoTen, 
+                soDienThoai = user.SoDienThoai,
+                roles = roles
+            });
         }
 
-        // GET: Admin/Users/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        // POST: Admin/Users/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(string UserName, string Email, string Password, string HoTen, string SoDienThoai, string Role)
         {
-            if (id == null)
+            var user = new ApplicationUser
             {
-                return NotFound();
+                UserName = UserName,
+                Email = Email,
+                HoTen = HoTen,
+                SoDienThoai = SoDienThoai,
+                NgayTao = DateTime.Now
+            };
+
+            var result = await _userManager.CreateAsync(user, Password);
+            if (result.Succeeded)
+            {
+                if (!string.IsNullOrEmpty(Role))
+                {
+                    await _userManager.AddToRoleAsync(user, Role);
+                }
+                TempData["SuccessMessage"] = "Thêm người dùng mới thành công!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Lỗi: " + string.Join(", ", result.Errors.Select(e => e.Description));
             }
 
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var userRoles = await _userManager.GetRolesAsync(user);
-            var allRoles = await _roleManager.Roles.ToListAsync();
-
-            ViewBag.UserRoles = userRoles;
-            ViewBag.AllRoles = allRoles;
-
-            return View(user);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Admin/Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, ApplicationUser model, string[] selectedRoles)
+        public async Task<IActionResult> Edit(string id, string HoTen, string SoDienThoai, string Email, string Role)
         {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
-
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            if (user == null) return NotFound();
+
+            // Special protection for central 'admin' username
+            if (user.UserName.ToLower() == "admin" && (string.IsNullOrEmpty(Role) || Role != "Admin"))
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Không thể gỡ bỏ vai trò Quản trị viên của tài khoản Admin hệ thống!";
+                return RedirectToAction(nameof(Index));
             }
 
-            // Update user properties
-            user.HoTen = model.HoTen;
-            user.SoDienThoai = model.SoDienThoai;
-            user.Email = model.Email;
-            user.UserName = model.UserName;
+            user.HoTen = HoTen;
+            user.SoDienThoai = SoDienThoai;
+            user.Email = Email;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                // Update roles
-                var userRoles = await _userManager.GetRolesAsync(user);
-                var rolesToRemove = userRoles.Except(selectedRoles ?? new string[0]);
-                var rolesToAdd = (selectedRoles ?? new string[0]).Except(userRoles);
-
-                await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
-                await _userManager.AddToRolesAsync(user, rolesToAdd);
-
-                TempData["SuccessMessage"] = "Cập nhật người dùng thành công!";
-                return RedirectToAction(nameof(Index));
+                // Update Roles
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                
+                // Only update roles if different
+                if (!currentRoles.Contains(Role))
+                {
+                    await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                    if (!string.IsNullOrEmpty(Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Role);
+                    }
+                }
+                
+                TempData["SuccessMessage"] = "Cập nhật thông tin người dùng thành công!";
             }
-
-            foreach (var error in result.Errors)
+            else
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                TempData["ErrorMessage"] = "Lỗi cập nhật: " + string.Join(", ", result.Errors.Select(e => e.Description));
             }
 
-            var allRoles = await _roleManager.Roles.ToListAsync();
-            ViewBag.UserRoles = selectedRoles ?? new string[0];
-            ViewBag.AllRoles = allRoles;
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Admin/Users/Delete/5
@@ -145,19 +150,31 @@ namespace CinemaBooking.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            if (user == null) return NotFound();
+
+            // Self-deletion protection
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id == currentUserId)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Bạn không thể tự xóa tài khoản của chính mình!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // System 'admin' protection
+            if (user.UserName.ToLower() == "admin")
+            {
+                TempData["ErrorMessage"] = "Không thể xóa tài khoản Admin hệ thống!";
+                return RedirectToAction(nameof(Index));
             }
 
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                TempData["SuccessMessage"] = "Xóa người dùng thành công!";
+                TempData["SuccessMessage"] = "Đã xóa người dùng thành công!";
             }
             else
             {
-                TempData["ErrorMessage"] = "Không thể xóa người dùng!";
+                TempData["ErrorMessage"] = "Lỗi khi xóa: " + string.Join(", ", result.Errors.Select(e => e.Description));
             }
 
             return RedirectToAction(nameof(Index));

@@ -15,7 +15,7 @@ using System.IO;
 
 namespace CinemaBooking.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "User")]
     public class UserProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -53,12 +53,14 @@ namespace CinemaBooking.Controllers
             
             // Xếp hạng thành viên (Logic 2026)
             string rank = "Đồng";
+            decimal discountPercent = 0;
             decimal totalSpent = (decimal)ViewBag.TotalSpent;
-            if (totalSpent >= 10000000) rank = "Kim Cương";
-            else if (totalSpent >= 5000000) rank = "Vàng";
-            else if (totalSpent >= 1000000) rank = "Bạc";
+            if (totalSpent >= 10000000) { rank = "Kim Cương"; discountPercent = 15; }
+            else if (totalSpent >= 5000000) { rank = "Vàng"; discountPercent = 10; }
+            else if (totalSpent >= 1000000) { rank = "Bạc"; discountPercent = 5; }
             
             ViewBag.MemberRank = rank;
+            ViewBag.DiscountPercent = discountPercent;
 
             // Thiết lập vai trò người dùng
             ViewBag.Roles = new List<string>();
@@ -148,8 +150,8 @@ namespace CinemaBooking.Controllers
                     Directory.CreateDirectory(uploadsFolder);
                 }
 
-                // Xóa ảnh cũ nếu có
-                if (!string.IsNullOrEmpty(user.AvatarUrl))
+                // Xóa ảnh cũ nếu là ảnh local (trong thư mục /uploads/)
+                if (!string.IsNullOrEmpty(user.AvatarUrl) && user.AvatarUrl.StartsWith("/uploads/"))
                 {
                     string oldPath = Path.Combine(_hostEnvironment.WebRootPath, user.AvatarUrl.TrimStart('/'));
                     if (System.IO.File.Exists(oldPath))
@@ -167,6 +169,20 @@ namespace CinemaBooking.Controllers
                 }
                 
                 user.AvatarUrl = "/uploads/avatars/" + uniqueFileName;
+            }
+            else
+            {
+                // Nếu không upload file, cập nhật AvatarUrl từ input link
+                // Nếu AvatarUrl mới khác AvatarUrl cũ và AvatarUrl cũ là ảnh local, hãy xóa nó
+                if (user.AvatarUrl != model.AvatarUrl && !string.IsNullOrEmpty(user.AvatarUrl) && user.AvatarUrl.StartsWith("/uploads/"))
+                {
+                    string oldPath = Path.Combine(_hostEnvironment.WebRootPath, user.AvatarUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }
+                user.AvatarUrl = model.AvatarUrl;
             }
 
             await _context.SaveChangesAsync();

@@ -43,12 +43,14 @@ namespace CinemaBooking.Controllers
         }
 
         // GET: Account/Login
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                var user = await _userManager.GetUserAsync(User);
+                return Redirect(await GetRedirectUrl(user, returnUrl));
             }
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
@@ -95,7 +97,7 @@ namespace CinemaBooking.Controllers
                             }
                         }
                         
-                        return RedirectToAction("Index", "Home");
+                        return Redirect(await GetRedirectUrl(identityUser));
                     }
                 }
 
@@ -154,7 +156,7 @@ namespace CinemaBooking.Controllers
                             Console.WriteLine("Signing in with existing Identity user");
                             // Sign in with Identity
                             await _signInManager.SignInAsync(existingIdentityUser, model.RememberMe);
-                            return RedirectToAction("Index", "Home");
+                            return Redirect(await GetRedirectUrl(existingIdentityUser));
                         }
                         else
                         {
@@ -180,7 +182,7 @@ namespace CinemaBooking.Controllers
 
                                 // Sign in with new Identity user
                                 await _signInManager.SignInAsync(newIdentityUser, model.RememberMe);
-                                return RedirectToAction("Index", "Home");
+                                return Redirect(await GetRedirectUrl(newIdentityUser));
                             }
                             else
                             {
@@ -342,7 +344,7 @@ namespace CinemaBooking.Controllers
 
                 Console.WriteLine($"Đăng ký thành công cho người dùng: {user.TenDangNhap}");
                 TempData["SuccessMessage"] = "Đăng ký thành công và đã đăng nhập tự động!";
-                return RedirectToAction("Index", "Home");
+                return Redirect(await GetRedirectUrl(identityUser));
             }
 
             // Bước hiển thị form OTP nếu ở trạng thái cần nhập OTP
@@ -472,7 +474,8 @@ namespace CinemaBooking.Controllers
             return View("Register", model);
         }
 
-        // GET: Account/Logout
+        // POST/GET: Account/Logout
+        [HttpPost, HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -808,7 +811,34 @@ namespace CinemaBooking.Controllers
             // Sign in with Identity
             await _signInManager.SignInAsync(identityUser, isPersistent: true);
 
-            return LocalRedirect(returnUrl);
+            return Redirect(await GetRedirectUrl(identityUser, returnUrl));
+        }
+
+        // GET: Account/AccessDenied
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        private async Task<string> GetRedirectUrl(ApplicationUser user, string returnUrl = null)
+        {
+            if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                // Đối với Admin, chúng ta ưu tiên trang Dashboard của Admin
+                // trừ khi họ đang cố truy cập một trang Admin cụ thể (đã có returnUrl)
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) && returnUrl.Contains("/Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    return returnUrl;
+                }
+                return Url.Action("Index", "Home", new { area = "Admin" });
+            }
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return returnUrl;
+            }
+
+            return Url.Action("Index", "Home");
         }
     }
 }

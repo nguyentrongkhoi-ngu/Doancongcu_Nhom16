@@ -5,17 +5,29 @@
     var totalSpent = ViewBag.TotalSpent ?? 0m;
     var totalTickets = ViewBag.TotalTickets ?? 0;
     var memberRank = ViewBag.MemberRank ?? "Đồng";
+    var discountPercent = ViewBag.DiscountPercent ?? 0m;
     
     // Define rank colors/gradients
     string rankGradient = "linear-gradient(135deg, #a8a8a8 0%, #707070 100%)"; // Đồng
+    string nextRank = "Bạc";
+    decimal nextThreshold = 1000000;
     
     if (memberRank == "Bạc") {
         rankGradient = "linear-gradient(135deg, #e3e3e3 0%, #a1a1a1 100%)";
+        nextRank = "Vàng";
+        nextThreshold = 5000000;
     } else if (memberRank == "Vàng") {
         rankGradient = "linear-gradient(135deg, #ffe08a 0%, #d4af37 100%)";
+        nextRank = "Kim Cương";
+        nextThreshold = 10000000;
     } else if (memberRank == "Kim Cương") {
         rankGradient = "linear-gradient(135deg, #b9f2ff 0%, #00d4ff 100%)";
+        nextRank = "";
+        nextThreshold = 0;
     }
+
+    decimal progressPercent = nextThreshold > 0 ? (totalSpent / nextThreshold) * 100 : 100;
+    if (progressPercent > 100) progressPercent = 100;
 }
 
 <div class="container-fluid px-4" style="padding-top: 100px; min-height: 90vh; background: radial-gradient(circle at 10% 20%, rgba(229, 9, 20, 0.05) 0%, transparent 40%);">
@@ -148,16 +160,39 @@
                                 <span class="value"><span class="status-dot"></span> Đang hoạt động</span>
                             </div>
                         </div>
+
+                        @if (!string.IsNullOrEmpty(nextRank))
+                        {
+                            <div class="mt-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-white-50 small">Tiến trình lên hạng <strong>@nextRank</strong></span>
+                                    <span class="text-white small">@string.Format("{0:N0}đ", totalSpent) / @string.Format("{0:N0}đ", nextThreshold)</span>
+                                </div>
+                                <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px;">
+                                    <div class="progress-bar" role="progressbar" 
+                                         style="width: @progressPercent%; background: @rankGradient; box-shadow: 0 0 10px rgba(255,255,255,0.2);" 
+                                         aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p class="text-white-50 xs-small mt-2">Bạn cần chi tiêu thêm <strong>@string.Format("{0:N0}đ", nextThreshold - totalSpent)</strong> để nâng cấp hạng thành viên.</p>
+                            </div>
+                        }
                     </div>
                 </div>
 
                 <div class="col-lg-5">
-                    <div class="glass-container p-4 h-100 text-center">
-                        <h5 class="text-white fw-bold mb-3">Mã Thành Viên QR</h5>
-                        <div id="qrcode-wrapper" class="d-inline-block p-3 bg-white rounded-3 shadow-sm mb-3">
-                            <div id="qrcode"></div>
+                    <div class="glass-container p-4 h-100 text-center d-flex flex-column">
+                        <h5 class="text-white fw-bold mb-3">Quyền Lợi Hiện Tại</h5>
+                        <div class="benefit-box mb-3 flex-grow-1 d-flex flex-column justify-content-center">
+                            <div class="display-4 fw-black text-white mb-0">@discountPercent%</div>
+                            <div class="text-white-50 text-uppercase small letter-spacing-1">Giảm giá trực tiếp</div>
+                            <p class="text-white-50 small mt-3 px-3">Hạng <strong>@memberRank</strong> được giảm <strong>@discountPercent%</strong> trên mỗi hóa đơn đặt vé phim.</p>
                         </div>
-                        <p class="text-white-50 small">Sử dụng mã này để check-in tại quầy vé và tích điểm tự động.</p>
+                        <div class="qr-label mt-auto">
+                            <h6 class="text-white fw-bold mb-3">Mã Thành Viên QR</h6>
+                            <div id="qrcode-wrapper" class="d-inline-block p-2 bg-white rounded-3 shadow-sm mb-2">
+                                <div id="qrcode"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -346,6 +381,25 @@
         #qrcode img {
             border: 4px solid #fff;
         }
+
+        .xs-small {
+            font-size: 0.75rem;
+        }
+
+        .letter-spacing-1 {
+            letter-spacing: 1px;
+        }
+
+        .fw-black {
+            font-weight: 900;
+        }
+
+        .benefit-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+        }
     </style>
 }
 
@@ -359,8 +413,8 @@
             
             new QRCode(document.getElementById("qrcode"), {
                 text: qrText,
-                width: 140,
-                height: 140,
+                width: 120,
+                height: 120,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
