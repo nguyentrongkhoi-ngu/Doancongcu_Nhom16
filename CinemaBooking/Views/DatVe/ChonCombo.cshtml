@@ -41,7 +41,7 @@
     }
 
     .cg-page {
-        padding-top: 40px;
+        padding-top: 140px !important;
         padding-bottom: 80px !important;
     }
 
@@ -91,8 +91,11 @@
     /* ===== COMBO LIST ===== */
     .combo-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 8px; /* Offset for custom scrollbar if needed */
     }
 
     .combo-card {
@@ -115,7 +118,7 @@
 
     .combo-image {
         position: relative;
-        height: 180px;
+        height: 130px;
         overflow: hidden;
     }
 
@@ -164,7 +167,7 @@
     }
 
     .combo-content {
-        padding: 20px;
+        padding: 14px 16px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -232,9 +235,9 @@
 
     /* ===== SIDEBAR ===== */
     .cg-sidebar-title {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 800;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         color: white;
     }
 
@@ -256,15 +259,15 @@
     .cg-divider {
         height: 1px;
         background: var(--cz-border);
-        margin: 24px 0;
+        margin: 16px 0;
     }
 
     .cg-price-box {
         background: rgba(255,255,255,0.02);
         border: 1px solid var(--cz-border);
         border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 24px;
+        padding: 16px;
+        margin-bottom: 16px;
     }
 
     .cg-price-row {
@@ -285,7 +288,7 @@
     }
 
     .cg-price-total__amount {
-        font-size: 2.25rem;
+        font-size: 1.8rem;
         font-weight: 900;
         color: white;
         letter-spacing: -1px;
@@ -340,17 +343,14 @@
 
 <div class="cg-ambient" style="background-image: url('@posterUrl');"></div>
 
-<div class="container cg-page">
+<div class="container cg-page" style="margin-top: 110px;">
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="cg-panel">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="m-0 d-flex align-items-center">
-                        <span class="me-3 fs-3">🍿</span> Concession Stand
-                    </h2>
-                    <span class="badge bg-white bg-opacity-10 border border-white border-opacity-10 px-3 py-2 rounded-pill small">
-                        Bắp rang & Nước ngọt
-                    </span>
+                <div class="mb-4 d-flex align-items-center justify-content-between">
+                    <h3 class="m-0 text-white fw-bold d-flex align-items-center">
+                        <span class="me-2 fs-3">🍿</span> Đồ ăn & Thức uống
+                    </h3>
                 </div>
 
                 <!-- Category Tabs -->
