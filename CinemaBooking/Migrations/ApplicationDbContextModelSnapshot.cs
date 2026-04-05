@@ -125,6 +125,75 @@ namespace CinemaBooking.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity("CinemaBooking.Models.Combo", b =>
+                {
+                    b.Property<int>("MaCombo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ma_combo");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaCombo"));
+
+                    b.Property<decimal>("Gia")
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("gia");
+
+                    b.Property<string>("HinhAnh")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("hinh_anh");
+
+                    b.Property<string>("KichThuoc")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("kich_thuoc");
+
+                    b.Property<string>("Loai")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("loai");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("mo_ta");
+
+                    b.Property<string>("Nhan")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("nhan");
+
+                    b.Property<int>("SoLuongTon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(999)
+                        .HasColumnName("so_luong_ton");
+
+                    b.Property<string>("TenCombo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ten_combo");
+
+                    b.Property<bool>("TrangThai")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnName("trang_thai");
+
+                    b.Property<int>("UuTien")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("uu_tien");
+
+                    b.HasKey("MaCombo");
+
+                    b.ToTable("combo", (string)null);
+                });
+
+>>>>>>> origin/feature/nguyentraduydat
             modelBuilder.Entity("CinemaBooking.Models.DanhGia", b =>
                 {
                     b.Property<int>("MaDanhGia")
@@ -231,6 +300,32 @@ namespace CinemaBooking.Migrations
                     b.ToTable("dat_ve", (string)null);
                 });
 
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity("CinemaBooking.Models.DatVeCombo", b =>
+                {
+                    b.Property<int>("MaDatVe")
+                        .HasColumnType("int")
+                        .HasColumnName("ma_dat_ve")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("MaCombo")
+                        .HasColumnType("int")
+                        .HasColumnName("ma_combo")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int")
+                        .HasColumnName("so_luong");
+
+                    b.HasKey("MaDatVe", "MaCombo");
+
+                    b.HasIndex("MaCombo");
+
+                    b.ToTable("dat_ve_combo", (string)null);
+                });
+
+>>>>>>> origin/feature/nguyentraduydat
             modelBuilder.Entity("CinemaBooking.Models.DatVeGhe", b =>
                 {
                     b.Property<int>("MaDatVe")
@@ -291,6 +386,15 @@ namespace CinemaBooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaKhuyenMai"));
 
+<<<<<<< HEAD
+=======
+                    b.Property<decimal>("GiaTriToiThieu")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m)
+                        .HasColumnName("gia_tri_toi_thieu");
+
+>>>>>>> origin/feature/nguyentraduydat
                     b.Property<string>("MaCode")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -582,6 +686,13 @@ namespace CinemaBooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPhim"));
 
+<<<<<<< HEAD
+=======
+                    b.Property<double?>("DiemIMDb")
+                        .HasColumnType("float")
+                        .HasColumnName("diem_imdb");
+
+>>>>>>> origin/feature/nguyentraduydat
                     b.Property<string>("DinhDang")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -615,6 +726,19 @@ namespace CinemaBooking.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("trailer");
 
+<<<<<<< HEAD
+=======
+                    b.Property<string>("TrangThai")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("trang_thai");
+
+                    b.Property<string>("UrlBackdrop")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("url_backdrop");
+
+>>>>>>> origin/feature/nguyentraduydat
                     b.Property<string>("UrlPoster")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
@@ -634,12 +758,26 @@ namespace CinemaBooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPhong"));
 
+<<<<<<< HEAD
+=======
+                    b.Property<string>("LoaiPhong")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("loai_phong");
+
+>>>>>>> origin/feature/nguyentraduydat
                     b.Property<int>("MaRap")
                         .HasColumnType("int")
                         .HasColumnName("ma_rap");
 
+<<<<<<< HEAD
                     b.Property<int>("SoPhong")
                         .HasColumnType("int")
+=======
+                    b.Property<string>("SoPhong")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+>>>>>>> origin/feature/nguyentraduydat
                         .HasColumnName("so_phong");
 
                     b.Property<int>("SucChua")
@@ -930,6 +1068,28 @@ namespace CinemaBooking.Migrations
                     b.Navigation("NguoiDung");
                 });
 
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity("CinemaBooking.Models.DatVeCombo", b =>
+                {
+                    b.HasOne("CinemaBooking.Models.Combo", "Combo")
+                        .WithMany("DatVeCombos")
+                        .HasForeignKey("MaCombo")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CinemaBooking.Models.DatVe", "DatVe")
+                        .WithMany("DatVeCombos")
+                        .HasForeignKey("MaDatVe")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Combo");
+
+                    b.Navigation("DatVe");
+                });
+
+>>>>>>> origin/feature/nguyentraduydat
             modelBuilder.Entity("CinemaBooking.Models.DatVeGhe", b =>
                 {
                     b.HasOne("CinemaBooking.Models.DatVe", "DatVe")
@@ -1131,8 +1291,20 @@ namespace CinemaBooking.Migrations
                     b.Navigation("OtpInfos");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("CinemaBooking.Models.DatVe", b =>
                 {
+=======
+            modelBuilder.Entity("CinemaBooking.Models.Combo", b =>
+                {
+                    b.Navigation("DatVeCombos");
+                });
+
+            modelBuilder.Entity("CinemaBooking.Models.DatVe", b =>
+                {
+                    b.Navigation("DatVeCombos");
+
+>>>>>>> origin/feature/nguyentraduydat
                     b.Navigation("DatVeGhes");
 
                     b.Navigation("ThanhToans");

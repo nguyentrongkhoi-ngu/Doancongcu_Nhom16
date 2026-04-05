@@ -27,10 +27,28 @@ namespace CinemaBooking.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+<<<<<<< HEAD
             _logger.LogInformation("Dịch vụ dọn dẹp lịch chiếu đã khởi động");
 
             // Chạy ngay sau khi khởi động
             await ProcessExpiredLichChieu(stoppingToken);
+=======
+            _logger.LogInformation("Dịch vụ dọn dẹp lịch chiếu đã khởi động. Đợi 30 giây để hệ thống ổn định...");
+
+            // Đợi 30 giây để SeedData và Migrations hoàn tất, tránh xung đột DB
+            try {
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+            } catch (OperationCanceledException) {
+                return;
+            }
+
+            // Chạy lần đầu sau khi delay
+            try {
+                await ProcessExpiredLichChieu(stoppingToken);
+            } catch (Exception ex) {
+                _logger.LogWarning(ex, "Lỗi khi xử lý lịch chiếu hết hạn lần đầu. Sẽ thử lại trong chu kỳ sau.");
+            }
+>>>>>>> origin/feature/nguyentraduydat
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -67,11 +85,23 @@ namespace CinemaBooking.Services
             
             // Lấy thời gian hiện tại
             var now = DateTime.Now;
+<<<<<<< HEAD
             
             // Lấy các lịch chiếu của ngày hiện tại và trước đó, sau đó sẽ lọc trong bộ nhớ
             var lichChieuQuery = await dbContext.LichChieus
                 .Include(lc => lc.Phim)
                 .Where(lc => lc.NgayChieu.Date <= now.Date)
+=======
+            var today = now.Date;
+            
+            // Chỉ lấy các lịch chiếu trong vòng 7 ngày qua để tránh tải quá nhiều dữ liệu cũ (gây chậm/crash)
+            var minDate = today.AddDays(-7);
+            
+            var lichChieuQuery = await dbContext.LichChieus
+                .Include(lc => lc.Phim)
+                .Where(lc => lc.NgayChieu >= minDate && lc.NgayChieu <= today)
+                .AsNoTracking()
+>>>>>>> origin/feature/nguyentraduydat
                 .ToListAsync(stoppingToken);
 
             // Lọc các lịch chiếu đã hết hạn trong bộ nhớ

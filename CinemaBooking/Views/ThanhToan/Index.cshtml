@@ -10,8 +10,27 @@
     
     // Calculations for Breakdown
     var ticketCount = Model.DatVeGhes?.Count ?? 0;
+<<<<<<< HEAD
     var subtotal = Model.LichChieu.GiaVe * ticketCount;
     var discount = subtotal - Model.TongTien;
+=======
+    var seatTotal = Model.DatVeGhes?.Sum(g => {
+        // Simple logic mirroring controller (should ideally come from DB if per-seat price is stored)
+        var soGhe = g.Ghe.SoGhe;
+        var row = soGhe[0];
+        var col = int.Parse(soGhe.Substring(1));
+        decimal gia = Model.LichChieu.GiaVe;
+        if (row >= 'J') gia = Model.LichChieu.GiaVe * 1.2m;
+        if (row == 'P' && col <= 4) gia = Model.LichChieu.GiaVe * 1.5m;
+        return gia;
+    }) ?? 0;
+    
+    var comboTotal = Model.DatVeCombos?.Sum(c => c.Combo.Gia * c.SoLuong) ?? 0;
+    var subtotal = seatTotal + comboTotal;
+    var discount = subtotal * (Model.KhuyenMai?.PhanTramGiam / 100m ?? 0); 
+    if (Model.MaKhuyenMai.HasValue && discount == 0) discount = subtotal - Model.TongTien; // Fallback
+
+>>>>>>> origin/feature/nguyentraduydat
 }
 
 <script>document.body.classList.add('immersive-page');</script>
@@ -43,6 +62,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+<<<<<<< HEAD
         margin-bottom: 32px;
         min-height: 60px;
     }
@@ -116,6 +136,13 @@
         .cz-stepper { gap: 10px; }
         .cz-step__line { display: none; }
     }
+=======
+        margin-bottom: 10px;
+        min-height: 30px;
+    }
+
+    /* ===== PROGRESS STEPPER ===== */
+>>>>>>> origin/feature/nguyentraduydat
 
     body {
         background: var(--cz-bg) !important;
@@ -135,11 +162,16 @@
     }
 
     .tt-page {
+<<<<<<< HEAD
         margin-top: 110px;
         padding-top: 10px;
         padding-bottom: 40px;
         max-width: 1000px;
         min-height: calc(100vh - 150px);
+=======
+        padding-bottom: 80px !important;
+        max-width: 1000px;
+>>>>>>> origin/feature/nguyentraduydat
         display: flex;
         flex-direction: column;
     }
@@ -178,7 +210,11 @@
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--cz-border);
         border-radius: var(--cz-radius);
+<<<<<<< HEAD
         padding: 28px 24px;
+=======
+        padding: 20px;
+>>>>>>> origin/feature/nguyentraduydat
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -186,15 +222,26 @@
     }
 
     .tt-panel__title {
+<<<<<<< HEAD
         font-size: 0.75rem;
+=======
+        font-size: 0.7rem;
+>>>>>>> origin/feature/nguyentraduydat
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 2px;
         color: var(--cz-text-muted);
+<<<<<<< HEAD
         margin-bottom: 24px;
         display: flex;
         align-items: center;
         gap: 12px;
+=======
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+>>>>>>> origin/feature/nguyentraduydat
     }
     .tt-panel__title::after { content: ''; flex: 1; height: 1px; background: var(--cz-border); }
 
@@ -206,9 +253,15 @@
     }
 
     .tt-poster {
+<<<<<<< HEAD
         width: 100px;
         height: 145px;
         border-radius: 12px;
+=======
+        width: 75px;
+        height: 110px;
+        border-radius: 10px;
+>>>>>>> origin/feature/nguyentraduydat
         object-fit: cover;
         box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         flex-shrink: 0;
@@ -218,11 +271,19 @@
     .tt-info { flex: 1; display: flex; flex-direction: column; }
 
     .tt-movie-title {
+<<<<<<< HEAD
         font-size: 1.7rem;
         font-weight: 950;
         line-height: 1.1;
         letter-spacing: -0.5px;
         margin-bottom: 16px;
+=======
+        font-size: 1.3rem;
+        font-weight: 950;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+>>>>>>> origin/feature/nguyentraduydat
         background: linear-gradient(to bottom, #fff, #bbb);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -263,7 +324,11 @@
     }
 
     .tt-final-price {
+<<<<<<< HEAD
         font-size: 2.2rem;
+=======
+        font-size: 1.8rem;
+>>>>>>> origin/feature/nguyentraduydat
         font-weight: 950;
         color: var(--cz-accent);
         line-height: 1;
@@ -282,12 +347,20 @@
         background: rgba(255,255,255,0.02);
         border: 2px solid transparent;
         border-radius: 16px;
+<<<<<<< HEAD
         padding: 20px 12px;
+=======
+        padding: 12px;
+>>>>>>> origin/feature/nguyentraduydat
         display: flex;
         flex-direction: column; /* Vertical alignment */
         align-items: center;
         text-align: center;
+<<<<<<< HEAD
         gap: 10px;
+=======
+        gap: 8px;
+>>>>>>> origin/feature/nguyentraduydat
         cursor: pointer;
         transition: all 0.3s var(--cz-ease);
         position: relative;
@@ -467,6 +540,7 @@
 
 <div class="tt-ambient" style="background-image: url('@posterUrl');"></div>
 
+<<<<<<< HEAD
 <div class="container tt-page">
     
     <div class="tt-header-bar">
@@ -487,6 +561,11 @@
                 <div class="cz-step__label">Hoàn tất</div>
             </div>
         </div>
+=======
+<div class="container tt-page" style="margin-top: 110px;">
+    
+    <div class="tt-header-bar">
+>>>>>>> origin/feature/nguyentraduydat
         
         <!-- Countdown Timer -->
         <div id="payment-timer" class="tt-timer-bar">
@@ -536,9 +615,24 @@
 
                 <div class="tt-breakdown">
                     <div class="tt-breakdown-row">
+<<<<<<< HEAD
                         <span>Giá vé (@ticketCount vé x @Model.LichChieu.GiaVe.ToString("N0")đ)</span>
                         <span>@subtotal.ToString("N0")đ</span>
                     </div>
+=======
+                        <span>Giá vé (@ticketCount vé)</span>
+                        <span>@seatTotal.ToString("N0")đ</span>
+                    </div>
+                    @if (Model.DatVeCombos != null && Model.DatVeCombos.Any())
+                    {
+                        <div class="tt-breakdown-row">
+                            <span class="small">
+                                @string.Join(", ", Model.DatVeCombos.Select(c => $"{c.SoLuong}x {c.Combo.TenCombo}"))
+                            </span>
+                            <span>@comboTotal.ToString("N0")đ</span>
+                        </div>
+                    }
+>>>>>>> origin/feature/nguyentraduydat
                     <div class="tt-breakdown-row">
                         <span>Phí dịch vụ</span>
                         <span class="text-success">Miễn phí</span>
@@ -578,7 +672,11 @@
                     <!-- MoMo Option -->
                     <div class="tt-card is-active" data-method="momo" role="button">
                         <div class="tt-card-icon tt-card-icon--momo">
+<<<<<<< HEAD
                             <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo">
+=======
+                            <img src="https://img.mservice.io/momo-payment/2020/10/pa_momo.png" alt="MoMo">
+>>>>>>> origin/feature/nguyentraduydat
                         </div>
                         <div class="tt-card-info">
                             <div class="tt-card-name">Ví điện tử MoMo</div>
@@ -591,7 +689,11 @@
                     <div class="tt-card disabled" data-method="vnpay" role="button">
                         <span class="tt-card-badge">Sắp có</span>
                         <div class="tt-card-icon tt-card-icon--vnpay">
+<<<<<<< HEAD
                             <img src="https://vnpay.vn/wp-content/uploads/2020/07/Logo-VNPAYQR-update.png" alt="VNPAY">
+=======
+                            <img src="https://sandbox.vnpayment.vn/paymentv2/Images/brands/logo-vnpay.png" alt="VNPAY">
+>>>>>>> origin/feature/nguyentraduydat
                         </div>
                         <div class="tt-card-info">
                             <div class="tt-card-name">VNPAY-QR</div>
@@ -604,7 +706,11 @@
                     <div class="tt-card disabled" data-method="zalo" role="button">
                         <span class="tt-card-badge">Sắp có</span>
                         <div class="tt-card-icon tt-card-icon--zalo">
+<<<<<<< HEAD
                             <img src="https://marketingai.mediacdn.vn/wp-content/uploads/2019/04/ZaloPay-600x373.png" alt="ZaloPay">
+=======
+                            <img src="https://upload.wikimedia.org/wikipedia/vi/7/77/ZaloPay_Logo.png" alt="ZaloPay">
+>>>>>>> origin/feature/nguyentraduydat
                         </div>
                         <div class="tt-card-info">
                             <div class="tt-card-name">Ví ZaloPay</div>

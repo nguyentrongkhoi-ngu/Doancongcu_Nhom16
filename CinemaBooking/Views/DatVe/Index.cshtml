@@ -616,6 +616,14 @@
         var panels = document.querySelectorAll('.dv-showtime-group');
 
         function switchDate(selectedDate) {
+<<<<<<< HEAD
+=======
+            var exists = Array.from(pills).some(p => p.dataset.date === selectedDate);
+            if (!exists && pills.length > 0) {
+                selectedDate = pills[0].dataset.date;
+            }
+
+>>>>>>> origin/feature/nguyentraduydat
             pills.forEach(function (pill) {
                 var active = pill.dataset.date === selectedDate;
                 pill.classList.toggle('is-active', active);
@@ -632,6 +640,14 @@
             });
         }
 
+<<<<<<< HEAD
+=======
+        var initDate = '@(ViewBag.SelectedDate)';
+        if (initDate) {
+            switchDate(initDate);
+        }
+
+>>>>>>> origin/feature/nguyentraduydat
         pills.forEach(function (pill) {
             pill.addEventListener('click', function () {
                 switchDate(this.dataset.date);

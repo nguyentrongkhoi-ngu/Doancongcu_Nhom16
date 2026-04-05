@@ -10,7 +10,10 @@
     var basePriceStr = string.Format("{0:N0}đ", Model.GiaVe);
 }
 
+<<<<<<< HEAD
 <script>document.body.classList.add('immersive-page');</script>
+=======
+>>>>>>> origin/feature/nguyentraduydat
 
 @section Styles {
 <style>
@@ -60,6 +63,7 @@
     }
 
     /* ===== PROGRESS STEPPER ===== */
+<<<<<<< HEAD
     .cz-stepper {
         display: flex;
         justify-content: center;
@@ -134,6 +138,12 @@
     .cg-page {
         padding-top: 100px;
         padding-bottom: 80px;
+=======
+
+    /* ===== PAGE WRAPPER ===== */
+    .cg-page {
+        padding-bottom: 80px !important;
+>>>>>>> origin/feature/nguyentraduydat
     }
 
     /* ===== GLASS PANEL ===== */
@@ -544,6 +554,7 @@
 
 <div class="container cg-page">
     
+<<<<<<< HEAD
     <!-- Progress Stepper -->
     <div class="cz-stepper">
         <div class="cz-step is-active">
@@ -567,6 +578,8 @@
             <div class="cz-step__label">Hoàn tất</div>
         </div>
     </div>
+=======
+>>>>>>> origin/feature/nguyentraduydat
     <div class="row g-4">
 
         <!-- ===== SEAT MAP COLUMN ===== -->
@@ -723,8 +736,17 @@
                         <span>Tạm tính</span>
                         <span id="subtotal-display">0đ</span>
                     </div>
+<<<<<<< HEAD
                     <div class="cg-price-row cg-price-row--discount">
                         <span>Giảm giá</span>
+=======
+                    <div class="cg-price-row cg-price-row--discount" id="membership-discount-row" style="display: @(ViewBag.DiscountPercent > 0 ? "flex" : "none")">
+                        <span>Giảm giá thành viên (@ViewBag.UserRank - @ViewBag.DiscountPercent%)</span>
+                        <span id="membership-discount-display">0đ</span>
+                    </div>
+                    <div class="cg-price-row cg-price-row--discount">
+                        <span>Mã giảm giá</span>
+>>>>>>> origin/feature/nguyentraduydat
                         <span id="discount-display">0đ</span>
                     </div>
                     <div class="cg-price-total">
@@ -734,18 +756,28 @@
                 </div>
 
                 <!-- Booking form -->
+<<<<<<< HEAD
                 <form asp-action="LuuDatVe" method="post" id="form-booking">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="maLichChieu" value="@Model.MaLichChieu">
                     <input type="hidden" name="selectedSeats" id="hidden-seats">
                     <input type="hidden" name="maKhuyenMai"  id="hidden-coupon">
+=======
+                <form asp-action="ChonCombo" method="get" id="form-booking">
+                    <input type="hidden" name="maLichChieu" value="@Model.MaLichChieu">
+                    <input type="hidden" name="selectedSeats" id="hidden-seats">
+>>>>>>> origin/feature/nguyentraduydat
 
                     <button type="submit"
                             id="btn-submit-booking"
                             class="cg-btn-submit"
                             disabled
                             aria-disabled="true">
+<<<<<<< HEAD
                         Tiếp tục đặt vé
+=======
+                        Tiếp tục: Chọn Combo
+>>>>>>> origin/feature/nguyentraduydat
                     </button>
                 </form>
 
@@ -763,7 +795,12 @@
 
         /* ── State ── */
         var selectedSeats = [];   // [{ id, price }]
+<<<<<<< HEAD
         var discountAmount = 0;
+=======
+        var membershipDiscountPercent = parseFloat('@ViewBag.DiscountPercent') || 0;
+        var couponDiscountAmount = 0;
+>>>>>>> origin/feature/nguyentraduydat
         var couponCode = '';
         var screeningId = '@Model.MaLichChieu';
         var maxSeats = 8;
@@ -807,10 +844,33 @@
 
             // Price
             var subtotal = selectedSeats.reduce(function (sum, s) { return sum + s.price; }, 0);
+<<<<<<< HEAD
             var finalTotal = Math.max(0, subtotal - discountAmount);
 
             subtotalEl.textContent = formatCurrency(subtotal);
             discountEl.textContent = discountAmount > 0 ? '-' + formatCurrency(discountAmount) : '0đ';
+=======
+            
+            // Calculate membership discount first
+            var membershipDiscount = subtotal * (membershipDiscountPercent / 100);
+            var afterMembership = subtotal - membershipDiscount;
+            
+            // Recalculate coupon discount based on amount after membership discount ? 
+            // OR simple sum? Let's assume cumulative on subtotal for simplicity or policy.
+            // Based on Controller logic: tongTien = tongTien * (1 - membershipDiscountPercent / 100); then coupon.
+            
+            var finalTotal = Math.max(0, afterMembership - couponDiscountAmount);
+
+            subtotalEl.textContent = formatCurrency(subtotal);
+            
+            var memberDiscountEl = document.getElementById('membership-discount-display');
+            if (memberDiscountEl) {
+                memberDiscountEl.textContent = '-' + formatCurrency(membershipDiscount);
+                document.getElementById('membership-discount-row').style.display = membershipDiscount > 0 ? 'flex' : 'none';
+            }
+            
+            discountEl.textContent = couponDiscountAmount > 0 ? '-' + formatCurrency(couponDiscountAmount) : '0đ';
+>>>>>>> origin/feature/nguyentraduydat
             totalEl.textContent    = formatCurrency(finalTotal);
 
             // Hidden inputs
@@ -848,17 +908,30 @@
             var code = couponInput.value.trim();
             if (!code) return;
 
+<<<<<<< HEAD
+=======
+            // Calculate current total before applying coupon
+            var subtotal = selectedSeats.reduce(function (sum, s) { return sum + s.price; }, 0);
+            var membershipDiscount = subtotal * (membershipDiscountPercent / 100);
+            var afterMembership = subtotal - membershipDiscount;
+
+>>>>>>> origin/feature/nguyentraduydat
             fetch('/DatVe/KiemTraKhuyenMai', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
                 },
+<<<<<<< HEAD
                 body: 'maKhuyenMai=' + encodeURIComponent(code)
+=======
+                body: 'maKhuyenMai=' + encodeURIComponent(code) + '&tongTien=' + afterMembership
+>>>>>>> origin/feature/nguyentraduydat
             })
             .then(function (res) { return res.json(); })
             .then(function (data) {
                 if (data.isValid) {
+<<<<<<< HEAD
                     var subtotal = selectedSeats.reduce(function (s, x) { return s + x.price; }, 0);
                     discountAmount = subtotal * (data.phanTramGiam / 100);
                     couponCode = code;
@@ -874,6 +947,19 @@
             })
             .catch(function () {
                 couponMsgEl.textContent = 'Không thể kiểm tra mã. Vui lòng thử lại.';
+=======
+                    couponDiscountAmount = afterMembership * (data.phanTramGiam / 100);
+                    couponCode = code;
+                    couponMsgEl.textContent  = data.message;
+                    couponMsgEl.className    = 'cg-coupon__msg cg-coupon__msg--success';
+                } else {
+                    couponDiscountAmount = 0;
+                    couponCode = '';
+                    couponMsgEl.textContent = data.message;
+                    couponMsgEl.className   = 'cg-coupon__msg cg-coupon__msg--error';
+                }
+                renderUI();
+>>>>>>> origin/feature/nguyentraduydat
                 couponMsgEl.className   = 'cg-coupon__msg cg-coupon__msg--error';
             });
         });

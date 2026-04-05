@@ -57,6 +57,10 @@ namespace CinemaBooking.Models
         public virtual KhuyenMai KhuyenMai { get; set; }
 
         public virtual ICollection<DatVeGhe> DatVeGhes { get; set; }
+<<<<<<< HEAD
+=======
+        public virtual ICollection<DatVeCombo> DatVeCombos { get; set; }
+>>>>>>> origin/feature/nguyentraduydat
         public virtual ICollection<ThanhToan> ThanhToans { get; set; }
     }
 } 

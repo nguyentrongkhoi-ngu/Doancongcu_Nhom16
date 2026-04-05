@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -5,11 +6,15 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
+=======
+using System.Threading.Tasks;
+>>>>>>> origin/feature/nguyentraduydat
 
 namespace CinemaBooking.Services
 {
     public class EmailService
     {
+<<<<<<< HEAD
         private readonly IConfiguration _configuration;
         
         public EmailService(IConfiguration configuration)
@@ -155,3 +160,11 @@ namespace CinemaBooking.Services
         }
     }
 }
+=======
+        public Task SendEmailAsync(string email, string subject, string message)
+        {
+            return Task.CompletedTask;
+        }
+    }
+}
+>>>>>>> origin/feature/nguyentraduydat

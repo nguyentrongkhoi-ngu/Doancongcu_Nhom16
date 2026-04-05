@@ -102,6 +102,22 @@ namespace CinemaBooking.Data
             // Finally, Ensure all movies have some showtimes
             Console.WriteLine("Seeding showtimes...");
             await SeedShowtimes(context);
+<<<<<<< HEAD
+=======
+            
+            // Seed Combos
+            try 
+            {
+                Console.WriteLine("Seeding combos...");
+                await SeedCombos(context);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error seeding combos: {ex.Message}");
+                if (ex.InnerException != null) Console.WriteLine($"Inner: {ex.InnerException.Message}");
+            }
+            
+>>>>>>> origin/feature/nguyentraduydat
             Console.WriteLine("SeedData completed successfully.");
         }
 
@@ -112,8 +128,13 @@ namespace CinemaBooking.Data
 
             foreach (var rap in rapPhims)
             {
+<<<<<<< HEAD
                 phongChieus.Add(new PhongChieu { MaRap = rap.MaRap, SoPhong = 1, SucChua = 100 });
                 phongChieus.Add(new PhongChieu { MaRap = rap.MaRap, SoPhong = 2, SucChua = 120 });
+=======
+                phongChieus.Add(new PhongChieu { MaRap = rap.MaRap, SoPhong = "1", SucChua = 100 });
+                phongChieus.Add(new PhongChieu { MaRap = rap.MaRap, SoPhong = "2", SucChua = 120 });
+>>>>>>> origin/feature/nguyentraduydat
             }
 
             foreach (var phong in phongChieus)
@@ -126,6 +147,15 @@ namespace CinemaBooking.Data
 
         private static async Task SeedMovies(ApplicationDbContext context)
         {
+<<<<<<< HEAD
+=======
+            if (context.Phims.Any())
+            {
+                Console.WriteLine("Phims table already contains data, skipping movie seeding...");
+                return;
+            }
+
+>>>>>>> origin/feature/nguyentraduydat
             var movieData = new List<Phim>
             {
                 new Phim 
@@ -136,6 +166,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hành động, Khoa học viễn tưởng", 
                     NgayPhatHanh = new DateTime(2019, 4, 26),
                     UrlPoster = "https://image.tmdb.org/t/p/original/or06vSfv0uY7o98ToolkitW0v3K7.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/7RyB7z6IqH9Yp8W9oA_8sXkQ_pY.jpg",
+                    DiemIMDb = 8.4,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, 3D, IMAX",
                     Trailer = "https://www.youtube.com/watch?v=TcMBFSGVi1c"
                 },
@@ -147,6 +182,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hoạt hình, Hài hước, Gia đình", 
                     NgayPhatHanh = new DateTime(2024, 6, 14),
                     UrlPoster = "https://image.tmdb.org/t/p/original/vpn9sy7kR40O1ZJ3A6Gv09yH6Vj.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/stKGOmbuoeEEoGPqy9Y96jKiTuB.jpg",
+                    DiemIMDb = 7.6,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, 3D",
                     Trailer = "https://www.youtube.com/watch?v=L4DrolmDxmw"
                 },
@@ -158,6 +198,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hành động, Hài hước, Sci-Fi", 
                     NgayPhatHanh = new DateTime(2024, 7, 26),
                     UrlPoster = "https://image.tmdb.org/t/p/original/8cd96f2pUAp9GmBy5C2OSWSJhNm.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/yD0rN0Y6yI1c9nIqy7mO5ZzPzK3.jpg",
+                    DiemIMDb = 7.7,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, 3D, IMAX",
                     Trailer = "https://www.youtube.com/watch?v=73_1biulkYk"
                 },
@@ -169,6 +214,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hành động, Phiêu lưu, Kịch tính", 
                     NgayPhatHanh = new DateTime(2024, 7, 19),
                     UrlPoster = "https://image.tmdb.org/t/p/original/pjnD0S79CVC0XDY7vtSjIqvX1u2.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/pjna8WbB1X0pYV7YpZzYV9oU.jpg",
+                    DiemIMDb = 6.6,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, IMAX",
                     Trailer = "https://www.youtube.com/watch?v=vVj2itVjfd8"
                 },
@@ -180,6 +230,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hoạt hình, Phiêu lưu, Khoa học viễn tưởng", 
                     NgayPhatHanh = new DateTime(2024, 9, 27),
                     UrlPoster = "https://image.tmdb.org/t/p/original/hr7I1tLIs090dK47K0P70wInS0G.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/9lE7mShpS7jYz49yY7y7K9Z1oG.jpg",
+                    DiemIMDb = 8.3,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, 3D",
                     Trailer = "https://www.youtube.com/watch?v=67vbA5ZJdUs"
                 },
@@ -191,6 +246,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hài hước, Kịch tính, Romance", 
                     NgayPhatHanh = new DateTime(2024, 10, 18),
                     UrlPoster = "https://image.tmdb.org/t/p/original/6KpaYlyQoXlP2WbH2f2Tsc69kM.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/6KpaYlyQoXlP2WbH2f2Tsc69kM.jpg",
+                    DiemIMDb = 7.7,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D",
                     Trailer = "https://www.youtube.com/watch?v=I6B0_m83RVM"
                 },
@@ -202,6 +262,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Kinh dị, Thriller, Kịch tính", 
                     NgayPhatHanh = new DateTime(2025, 3, 7),
                     UrlPoster = "https://image.tmdb.org/t/p/original/wD1p356Xv3b8hE2m5hSleUpK3vj.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/wD1p356Xv3b8hE2m5hSleUpK3vj.jpg",
+                    DiemIMDb = 6.9,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D",
                     Trailer = "https://www.youtube.com/watch?v=mD2f_h1fE0M"
                 },
@@ -213,6 +278,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Kinh dị, Sci-Fi, Kịch tính", 
                     NgayPhatHanh = new DateTime(2025, 10, 31),
                     UrlPoster = "https://image.tmdb.org/t/p/original/yD0rN0Y6yI1c9nIqy7mO5ZzPzK3.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/yD0rN0Y6yI1c9nIqy7mO5ZzPzK3.jpg",
+                    DiemIMDb = 7.8,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, IMAX",
                     Trailer = "https://www.youtube.com/watch?v=rX6T9Z3rR_Y"
                 },
@@ -224,6 +294,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hài hước", 
                     NgayPhatHanh = new DateTime(2025, 1, 24),
                     UrlPoster = "https://image.tmdb.org/t/p/original/zN0fG0A9j3w3f7vX6rPzK5I9Gv.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/zN0fG0A9j3w3f7vX6rPzK5I9Gv.jpg",
+                    DiemIMDb = 5.8,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D",
                     Trailer = "https://www.youtube.com/watch?v=OneOfThemDaysTrailer"
                 },
@@ -235,6 +310,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hài hước, Thể thao", 
                     NgayPhatHanh = new DateTime(2025, 8, 15),
                     UrlPoster = "https://image.tmdb.org/t/p/original/happy_gilmore_two_poster.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/happy_gilmore_two_backdrop.jpg",
+                    DiemIMDb = 6.2,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D",
                     Trailer = "https://www.youtube.com/watch?v=HappyGilmore2"
                 },
@@ -246,6 +326,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Romance, Drama", 
                     NgayPhatHanh = new DateTime(2025, 2, 14),
                     UrlPoster = "https://image.tmdb.org/t/p/original/my_oxford_year_poster.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/my_oxford_year_backdrop.jpg",
+                    DiemIMDb = 7.1,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D",
                     Trailer = "https://www.youtube.com/watch?v=MyOxfordYear"
                 },
@@ -257,6 +342,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hành động, Phiêu lưu", 
                     NgayPhatHanh = new DateTime(2021, 12, 17),
                     UrlPoster = "https://image.tmdb.org/t/p/original/1g0dhvRzfwvqp1Z6BLpvmUfAdpI.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/1Rr9S9Px969tWyZzVH9A919p19p.jpg",
+                    DiemIMDb = 8.2,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, 3D, IMAX",
                     Trailer = "https://www.youtube.com/watch?v=JfVOs4VSpmA"
                 },
@@ -268,6 +358,11 @@ namespace CinemaBooking.Data
                     TheLoai = "Hành động, Drama", 
                     NgayPhatHanh = new DateTime(2022, 5, 27),
                     UrlPoster = "https://image.tmdb.org/t/p/original/628SwSjtR7ovR6RM9uFEEAbpqo.jpg",
+<<<<<<< HEAD
+=======
+                    UrlBackdrop = "https://image.tmdb.org/t/p/original/t9Xsb86v7Jq9uWyZzVH9A919p19p.jpg",
+                    DiemIMDb = 8.3,
+>>>>>>> origin/feature/nguyentraduydat
                     DinhDang = "2D, IMAX",
                     Trailer = "https://www.youtube.com/watch?v=qSqVVswa420"
                 }
@@ -327,6 +422,15 @@ namespace CinemaBooking.Data
 
         private static async Task SeedShowtimes(ApplicationDbContext context)
         {
+<<<<<<< HEAD
+=======
+            if (context.LichChieus.Any())
+            {
+                Console.WriteLine("LichChieus table already contains data, skipping showtime seeding...");
+                return;
+            }
+
+>>>>>>> origin/feature/nguyentraduydat
             var phims = await context.Phims.ToListAsync();
             var phongChieus = await context.PhongChieus.ToListAsync();
             var ngonNguPhims = await context.NgonNguPhims.ToListAsync();
@@ -367,5 +471,112 @@ namespace CinemaBooking.Data
             }
             await context.SaveChangesAsync();
         }
+<<<<<<< HEAD
+=======
+
+        private static async Task SeedCombos(ApplicationDbContext context)
+        {
+            // Clear existing combos only if NO bookings are attached to them
+            if (context.Combos.Any())
+            {
+                if (await context.DatVeCombos.AnyAsync())
+                {
+                    Console.WriteLine("Combos already have bookings attached, skipping re-seeding to prevent data loss.");
+                    return;
+                }
+
+                var existingCombos = context.Combos.ToList();
+                context.Combos.RemoveRange(existingCombos);
+                await context.SaveChangesAsync();
+                Console.WriteLine("Old combos cleared for new F&B structure.");
+            }
+
+            var combos = new List<Combo> {
+                // COMBOS
+                new Combo {
+                    TenCombo = "Solo Combo",
+                    MoTa = "1 Bắp (Ngọt/Mặn) + 1 Nước ngọt cỡ vừa. Tiết kiệm 15%.",
+                    Gia = 75000,
+                    Loai = "Combo",
+                    HinhAnh = "https://images.unsplash.com/photo-1572177191856-3cde618dee1f?w=800&q=80",
+                    KichThuoc = "Standard"
+                },
+                new Combo {
+                    TenCombo = "Couple Combo",
+                    MoTa = "1 Bắp lớn + 2 Nước ngọt cỡ lớn. Lựa chọn hoàn hảo cho cặp đôi.",
+                    Gia = 115000,
+                    Loai = "Combo",
+                    HinhAnh = "https://images.unsplash.com/photo-1594465909740-9821d81995ba?w=800&q=80",
+                    KichThuoc = "L"
+                },
+                new Combo {
+                    TenCombo = "Family Combo",
+                    MoTa = "2 Bắp lớn + 4 Nước ngọt + 2 Snack. Thỏa thích cho cả gia đình.",
+                    Gia = 245000,
+                    Loai = "Combo",
+                    HinhAnh = "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80"
+                },
+                new Combo {
+                    TenCombo = "CineZore Signature",
+                    MoTa = "1 Bắp phô mai + 1 Ly nước thiết kế + 1 Phần gà viên. Best Seller!",
+                    Gia = 155000,
+                    Loai = "Combo",
+                    HinhAnh = "https://images.unsplash.com/photo-1621262133369-90696b998cfb?w=800&q=80"
+                },
+
+                // BẮP (INDIVIDUAL)
+                new Combo {
+                    TenCombo = "Bắp Ngọt (Vừa)",
+                    MoTa = "Bắp rang bơ truyền thống vị ngọt thơm lừng.",
+                    Gia = 55000,
+                    Loai = "Bắp",
+                    HinhAnh = "https://images.unsplash.com/photo-1578849278619-e73505e9610f?w=800&q=80",
+                    KichThuoc = "M"
+                },
+                new Combo {
+                    TenCombo = "Bắp Phô Mai (Lớn)",
+                    MoTa = "Bắp rang phủ lớp bột phô mai béo ngậy. Hot Item!",
+                    Gia = 75000,
+                    Loai = "Bắp",
+                    HinhAnh = "https://images.unsplash.com/photo-1585647347384-2593bc3571d4?w=800&q=80",
+                    KichThuoc = "L"
+                },
+                new Combo {
+                    TenCombo = "Bắp Caramel (Vừa)",
+                    MoTa = "Vị ngọt đậm đà từ sốt caramel đun nóng.",
+                    Gia = 65000,
+                    Loai = "Bắp",
+                    HinhAnh = "https://images.unsplash.com/photo-1512423175373-cf648a73523f?w=800&q=80"
+                },
+
+                // NƯỚC (INDIVIDUAL)
+                new Combo {
+                    TenCombo = "Cocacola (Lớn)",
+                    MoTa = "Thức uống giải khát mát lạnh sảng khoái.",
+                    Gia = 35000,
+                    Loai = "Nước",
+                    HinhAnh = "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800&q=80",
+                    KichThuoc = "L"
+                },
+                new Combo {
+                    TenCombo = "Nước Suối Aquafina",
+                    MoTa = "Nước uống tinh khiết 500ml.",
+                    Gia = 20000,
+                    Loai = "Nước",
+                    HinhAnh = "https://images.unsplash.com/photo-1560023907-5f339617ea30?w=800&q=80"
+                },
+                new Combo {
+                    TenCombo = "Trà Đào Hạt Chia",
+                    MoTa = "Trà thanh nhiệt với miếng đào tươi và hạt chia.",
+                    Gia = 45000,
+                    Loai = "Nước",
+                    HinhAnh = "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80"
+                }
+            };
+
+            context.Combos.AddRange(combos);
+            await context.SaveChangesAsync();
+        }
+>>>>>>> origin/feature/nguyentraduydat
     }
 }

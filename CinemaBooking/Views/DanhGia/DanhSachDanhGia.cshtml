@@ -105,11 +105,14 @@
                                         bool canEdit = false;
                                         if (User.Identity.IsAuthenticated)
                                         {
+<<<<<<< HEAD
                                             if (User.IsInRole("Admin"))
                                             {
                                                 canEdit = true;
                                             }
                                             else
+=======
+>>>>>>> origin/feature/nguyentraduydat
                                             {
                                                 // Lấy legacy user ID từ email
                                                 var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;

@@ -12,6 +12,7 @@ using Microsoft.Extensions.FileProviders;
 using CinemaBooking.Models.Services;
 using CinemaBooking.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Thiết lập mã hóa UTF-8 cho console để hiển thị tiếng Việt
@@ -94,12 +95,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // Đăng ký IPasswordHasher cho NguoiDung (để tương thích với hệ thống cũ)
 builder.Services.AddScoped<IPasswordHasher<NguoiDung>, PasswordHasher<NguoiDung>>();
-
-// Thêm dịch vụ HttpContextAccessor
-builder.Services.AddHttpContextAccessor();
-
-// Thêm HttpClient
-builder.Services.AddHttpClient();
 
 // Thêm dịch vụ MomoService
 builder.Services.AddScoped<MomoService>();

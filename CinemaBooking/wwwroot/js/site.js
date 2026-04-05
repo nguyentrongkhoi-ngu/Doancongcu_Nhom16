@@ -25,6 +25,8 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // Function to handle navbar scrolling effect
     function handleNavbarScroll() {
+        if (!navbar) return;
+
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {

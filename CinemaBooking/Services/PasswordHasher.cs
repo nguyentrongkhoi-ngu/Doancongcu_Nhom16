@@ -1,11 +1,15 @@
 using System;
+<<<<<<< HEAD
 using System.Security.Cryptography;
 using System.Text;
+=======
+>>>>>>> origin/feature/nguyentraduydat
 
 namespace CinemaBooking.Services
 {
     public static class PasswordHasher
     {
+<<<<<<< HEAD
         // Hash mật khẩu
         public static string HashPassword(string password)
         {
@@ -24,3 +28,16 @@ namespace CinemaBooking.Services
         }
     }
 } 
+=======
+        public static bool VerifyPassword(string inputPassword, string hash)
+        {
+            return false;
+        }
+
+        public static string HashPassword(string password)
+        {
+            return password;
+        }
+    }
+}
+>>>>>>> origin/feature/nguyentraduydat

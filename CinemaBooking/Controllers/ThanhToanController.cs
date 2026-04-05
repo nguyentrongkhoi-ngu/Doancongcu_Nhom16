@@ -77,6 +77,12 @@ namespace CinemaBooking.Controllers
                         .ThenInclude(p => p.RapPhim)
                 .Include(d => d.DatVeGhes)
                     .ThenInclude(g => g.Ghe)
+<<<<<<< HEAD
+=======
+                .Include(d => d.DatVeCombos)
+                    .ThenInclude(c => c.Combo)
+                .Include(d => d.KhuyenMai)
+>>>>>>> origin/feature/nguyentraduydat
                 .FirstOrDefaultAsync(d => d.MaDatVe == maDatVe);
 
             if (datVe == null)
@@ -395,6 +401,12 @@ namespace CinemaBooking.Controllers
                         System.IO.File.WriteAllText(
                             Path.Combine(logPath, $"momo_ipn_success_{maDatVe}_{DateTime.Now:yyyyMMdd_HHmmss}.log"),
                             $"Cập nhật thành công thanh toán MoMo cho đơn hàng {maDatVe}, TransID: {transId}");
+<<<<<<< HEAD
+=======
+
+                        // Cập nhật điểm tích lũy
+                        await UpdateUserPoints(maDatVe);
+>>>>>>> origin/feature/nguyentraduydat
                     }
                     
                     TempData["SuccessMessage"] = "Thanh toán qua MoMo thành công!";
@@ -556,6 +568,12 @@ namespace CinemaBooking.Controllers
                                     System.IO.File.WriteAllText(
                                         Path.Combine(logPath, $"momo_ipn_success_{maDatVe}_{DateTime.Now:yyyyMMdd_HHmmss}.log"),
                                         $"Cập nhật thành công thanh toán MoMo cho đơn hàng {maDatVe}, TransID: {transId}");
+<<<<<<< HEAD
+=======
+
+                                    // Cập nhật điểm tích lũy
+                                    await UpdateUserPoints(maDatVe);
+>>>>>>> origin/feature/nguyentraduydat
                                 }
                             }
                         }
@@ -594,6 +612,12 @@ namespace CinemaBooking.Controllers
                         .ThenInclude(p => p.RapPhim)
                 .Include(d => d.DatVeGhes)
                     .ThenInclude(g => g.Ghe)
+<<<<<<< HEAD
+=======
+                .Include(d => d.DatVeCombos)
+                    .ThenInclude(c => c.Combo)
+                .Include(d => d.KhuyenMai)
+>>>>>>> origin/feature/nguyentraduydat
                 .Include(d => d.ThanhToans)
                 .FirstOrDefaultAsync(d => d.MaDatVe == maDatVe);
 
@@ -614,6 +638,12 @@ namespace CinemaBooking.Controllers
             {
                 datVe.TrangThai = "Đã thanh toán";
                 await _context.SaveChangesAsync();
+<<<<<<< HEAD
+=======
+                
+                // Cập nhật điểm tích lũy
+                await UpdateUserPoints(maDatVe);
+>>>>>>> origin/feature/nguyentraduydat
             }
 
             return View(datVe);
@@ -637,5 +667,57 @@ namespace CinemaBooking.Controllers
             }
             return ipAddress;
         }
+<<<<<<< HEAD
     }
 } 
+=======
+
+        // Cập nhật điểm tích lũy cho người dùng sau khi thanh toán thành công
+        private async Task UpdateUserPoints(int maDatVe)
+        {
+            try
+            {
+                var datVe = await _context.DatVes
+                    .Include(d => d.NguoiDung)
+                    .FirstOrDefaultAsync(d => d.MaDatVe == maDatVe);
+
+                if (datVe != null && datVe.NguoiDung != null && datVe.TrangThai == "Đã thanh toán")
+                {
+                    // Kiểm tra xem đã tích điểm cho vé này chưa (tránh cộng trùng)
+                    var exists = await _context.LichSuGiaoDiches
+                        .AnyAsync(l => l.MaNguoiDung == datVe.MaNguoiDung && l.LoaiGiaoDich == "Tích điểm" && l.NoiDung.Contains($"vé #{maDatVe}"));
+                    
+                    if (!exists)
+                    {
+                        // 1,000 VND = 1 điểm
+                        int pointsEarned = (int)(datVe.TongTien / 1000);
+                        
+                        if (pointsEarned > 0)
+                        {
+                            datVe.NguoiDung.DiemTichLuy += pointsEarned;
+                            
+                            // Ghi log tích điểm
+                            var lichSuDiem = new LichSuGiaoDich
+                            {
+                                MaNguoiDung = datVe.MaNguoiDung,
+                                LoaiGiaoDich = "Tích điểm",
+                                TrangThai = "Thành công",
+                                NoiDung = $"Tích +{pointsEarned} điểm từ vé #{maDatVe}",
+                                NgayGiaoDich = DateTime.Now
+                            };
+                            
+                            _context.LichSuGiaoDiches.Add(lichSuDiem);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi nhưng không làm gián đoạn luồng thanh toán
+                Console.WriteLine($"Error updating points: {ex.Message}");
+            }
+        }
+    }
+}
+>>>>>>> origin/feature/nguyentraduydat

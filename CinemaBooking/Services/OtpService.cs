@@ -1,14 +1,19 @@
+<<<<<<< HEAD
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CinemaBooking.Data;
 using CinemaBooking.Models;
+=======
+using System.Threading.Tasks;
+>>>>>>> origin/feature/nguyentraduydat
 
 namespace CinemaBooking.Services
 {
     public class OtpService
     {
+<<<<<<< HEAD
         private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
         
@@ -131,3 +136,21 @@ namespace CinemaBooking.Services
         }
     }
 } 
+=======
+        public Task<bool> VerifyOtp(string email, string otp, string action)
+        {
+            return Task.FromResult(true); // Luôn đúng để skip OTP
+        }
+
+        public Task InvalidateOldOtps(string email, string action)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<string> CreateOtp(string email, string action, string name)
+        {
+            return Task.FromResult("123456"); // Mã ảo
+        }
+    }
+}
+>>>>>>> origin/feature/nguyentraduydat
