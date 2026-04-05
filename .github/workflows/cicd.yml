@@ -11,7 +11,7 @@ on:
       - develop
 
 jobs:
-  # Giai đoạn 1: Kiểm tra định dạng Code
+  # 1. Kiểm tra định dạng Code
   lint:
     name: Lint & Format
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
       - name: Verify Formatting
         run: dotnet format CinemaBooking/CinemaBooking.csproj --verify-no-changes
 
-  # Giai đoạn 2: Build và Test (Đảm bảo code không có lỗi logic)
+  # 2. Xây dựng và Chạy Unit Test
   build-and-test:
     name: Build & Test
     needs: lint
@@ -49,12 +49,14 @@ jobs:
       - name: Run Unit Tests
         run: dotnet test CinemaBooking/CinemaBooking.csproj --configuration Release --no-build
 
-  # Giai đoạn 3: Đóng gói Docker (Chỉ chạy khi push vào main/develop)
+  # 3. Đóng gói Docker
   docker-build-push:
     name: Docker Build & Push
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    outputs:
+      image_tag: ${{ steps.vars.outputs.TAG }} # Truyền tag sang job sau
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -84,7 +86,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # Giai đoạn 4: Quét bảo mật (Security Scan)
+  # 4. Quét bảo mật (Sử dụng Tag động)
   security-scan:
     name: Security Scan
     needs: docker-build-push
@@ -93,11 +95,11 @@ jobs:
       - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ secrets.DOCKERHUB_USERNAME }}/cinemabooking:latest'
+          image-ref: '${{ secrets.DOCKERHUB_USERNAME }}/cinemabooking:${{ needs.docker-build-push.outputs.image_tag }}'
           format: 'table'
           severity: 'CRITICAL,HIGH'
 
-  # Giai đoạn 5: Tự động triển khai (Deploy - Chỉ chạy khi push vào main)
+  # 5. Tự động triển khai
   deploy:
     name: Deploy to Production
     needs: security-scan
@@ -114,3 +116,4 @@ jobs:
             cd /opt/cinemabooking
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
+            docker system prune -f
